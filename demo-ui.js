@@ -135,7 +135,7 @@ function draw({state, index, total, step, muted}) {
       : `<span class="compose-plus" aria-hidden="true">+</span><span class="compose-placeholder">Message</span><span class="send-symbol ${family ? 'send-pulse' : ''}" aria-hidden="true">${family ? '✓' : icon('mic')}</span>`;
     $('#family-stage-note').textContent = family ? step.view === 'compose' ? 'Alice prépare son message…' : 'Et hop, envoyé à maman ♡' : delivered ? 'Alice reçoit sa réponse ♡' : '';
     $('#phone-response').innerHTML = delivered
-      ? `<div class="received-message" aria-label="Message vocal de Jeanne"><div class="voice-note"><span class="voice-face">J<span>${icon('mic')}</span></span><span class="voice-play">${icon('play')}</span><div class="voice-body"><span class="voice-wave" aria-hidden="true">${voiceWave()}</span><span class="voice-duration">0:05</span></div></div>${receipt==='transcript'?`<div class="phone-transcript" aria-label="Transcription du message vocal"><p>${seniorLines.flowers}</p></div>`:''}<small class="message-time">09:41</small></div>`
+      ? `<div class="received-message" aria-label="Message vocal de Jeanne"><div class="voice-note"><span class="voice-face"><i class="jeanne-profile" aria-hidden="true"></i><span>${icon('mic')}</span></span><span class="voice-play">${icon('play')}</span><div class="voice-body"><span class="voice-wave" aria-hidden="true">${voiceWave()}</span><span class="voice-duration">0:05</span></div></div>${receipt==='transcript'?`<div class="phone-transcript" aria-label="Transcription du message vocal"><p>${seniorLines.flowers}</p></div>`:''}<small class="message-time">09:41</small></div>`
       : '';
     const phaseKey=key;
     requestAnimationFrame(()=> {

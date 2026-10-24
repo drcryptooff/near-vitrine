@@ -5,3 +5,6 @@
 .demo-person strong{margin:0}
 @media(max-width:600px){.demo-person .alice-profile{width:29px;height:29px}}
 @media(max-width:360px){.demo-person .alice-profile{width:26px;height:26px}}
+/* Frame the listening pose from Jeanne's existing illustration. */
+.demo-phone .phone-header .avatar.jeanne-profile,.demo-phone .voice-face>.jeanne-profile{display:block;border-radius:50%;background-color:#e3e8dc;background-image:url('assets/jeanne-abstract.png');background-repeat:no-repeat;background-size:350% 350%;background-position:18% .5%}
+.demo-phone .voice-face>.jeanne-profile{position:absolute;inset:0}

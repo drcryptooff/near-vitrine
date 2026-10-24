@@ -11,3 +11,13 @@
 @media(max-width:600px){.orbit-one{max-width:calc(100vw - 40px);max-height:calc(100vw - 40px)}.contact-section h2{font-size:clamp(46px,14vw,59px)}.demo-center{padding-top:15px}.demo-audio-orb{flex-shrink:0;width:68px;height:68px;margin:3px 0 9px}.demo-audio-orb svg{width:28px;height:28px}.demo-question{font-size:23px;margin:12px 0 9px}.record-quote{font-size:20px;padding:5px}.record-wave{height:25px;margin:8px;flex-shrink:0}.demo-center .demo-controls{margin-top:16px}.demo-badge{font-size:8px;margin-top:8px}.demo-controls{padding-top:10px}.demo-controls .quiet{min-height:28px;padding:5px}.demo-content .demo-explanation{font-size:10px}.demo-home .touch-halo{flex-shrink:0}}
 @media(max-width:360px){.demo-question{font-size:21px}.demo-controls button{padding:10px;font-size:10px}.demo-home strong{font-size:27px}.record-quote{font-size:19px}.demo-center .demo-controls{margin-top:12px}.demo-content .overline{font-size:8px}.demo-audio-orb{width:58px;height:58px}.demo-content .demo-explanation{font-size:9px}.demo-home .message-pill{font-size:11px}}
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*,*:before,*:after{animation:none!important;transition:none!important}.reveal{opacity:1;transform:none}}
+
+.demo-ending{min-height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:28px 32px;color:#f8f6f0;background:radial-gradient(ellipse at 50% 35%,#4f7964 0,#295e4b 65%);animation:screen-in .8s ease both}
+.demo-ending-mark{width:56px;height:56px;border:1px solid #ffffff55;border-radius:50%;display:grid;place-items:center;background:#ffffff12;color:#f4dcb2;margin-bottom:19px;box-shadow:0 0 0 10px #ffffff08}
+.demo-ending-mark svg{width:25px;height:25px}
+.demo-ending-kicker{font-size:8px;letter-spacing:1.7px;color:#d4e2d1}
+.demo-ending h3{font:500 27px/1.18 var(--serif);letter-spacing:-.5px;margin:13px 0 9px;max-width:250px}
+.demo-ending p{font-size:10px;line-height:1.7;color:#e1e9dc;max-width:230px}
+.demo-ending-replay{display:flex;align-items:center;gap:7px;margin-top:26px;padding:9px 13px;border:1px solid #ffffff42;border-radius:30px;color:#f1eddf;font-size:8px}
+.demo-ending-replay svg{width:13px;height:13px}
+@media(max-width:600px){.demo-ending{padding:24px 18px}.demo-ending-mark{width:48px;height:48px;margin-bottom:16px}.demo-ending h3{font-size:24px;max-width:220px}.demo-ending-replay{margin-top:20px;font-size:7px}}

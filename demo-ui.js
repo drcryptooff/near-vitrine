@@ -15,9 +15,36 @@ const audio = $('#demo-audio');
 const scenario = 'reply';
 let lastRender = '';
 let lastAssistant = '';
+let lastAliceMood = '';
 let snapshot, caption, highlighted, frame;
 const tablet = $('.demo-tablet');
 let demoInView = false;
+let soundEffectsContext;
+
+function prepareSoundEffects() {
+  const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+  if (!AudioContextClass) return;
+  soundEffectsContext ||= new AudioContextClass();
+  if (soundEffectsContext.state === 'suspended') soundEffectsContext.resume().catch(() => {});
+}
+
+function playAliceHappySound() {
+  if (audio.muted || !soundEffectsContext) return;
+  const now = soundEffectsContext.currentTime;
+  for (const [frequency, delay] of [[784, 0], [988, .075]]) {
+    const tone = soundEffectsContext.createOscillator();
+    const volume = soundEffectsContext.createGain();
+    tone.type = 'sine';
+    tone.frequency.value = frequency;
+    volume.gain.setValueAtTime(.0001, now + delay);
+    volume.gain.exponentialRampToValueAtTime(.055, now + delay + .025);
+    volume.gain.exponentialRampToValueAtTime(.0001, now + delay + .34);
+    tone.connect(volume);
+    volume.connect(soundEffectsContext.destination);
+    tone.start(now + delay);
+    tone.stop(now + delay + .36);
+  }
+}
 
 function updateCharactersVisibility() {
   const visible = demoInView && snapshot?.step.speaker === 'senior' && !['idle', 'ended'].includes(snapshot.state);
@@ -84,6 +111,8 @@ function draw({state, index, total, step, muted}) {
   const family = !idle && step.speaker === 'family';
   const presentation=demoPresentation(scenarios[scenario].steps,index,state);
   const {delivered,receipt}=presentation;
+  if (step.alice === 'happy' && lastAliceMood !== 'happy') playAliceHappySound();
+  lastAliceMood = step.alice || '';
   const key = `${scenario}:${index}:${idle}`;
   $('#demo-player').dataset.state = state;
   $('#demo-player').dataset.speaker = idle ? 'none' : step.speaker;
@@ -109,6 +138,8 @@ function draw({state, index, total, step, muted}) {
       screen.innerHTML = `<div class="demo-home family-arrival"><span class="message-pill">${icon('mail')} ${step.view === 'send' ? '1 nouveau message' : 'Votre famille, tout près.'}</span><span class="touch-halo">${icon(step.view === 'send' ? 'mail' : 'heart')}</span><strong>${step.view === 'send' ? 'Des nouvelles<br>d’Alice ♡' : 'Bonjour<br>Jeanne'}</strong></div>`;
     } else if (step.speaker === 'system' && step.view === 'loading') {
       screen.innerHTML = `<div class="demo-topline">${tabletBrand}<span>Jeanne</span></div><div class="tablet-loading" role="status" aria-label="Near prépare la suite"><span class="loading-orb">${icon('heart')}</span><span class="loading-dots" aria-hidden="true"><i></i><i></i><i></i></span>${snapshot.recording==='ready'?tabletAudio('ready'):''}</div>`;
+    } else if (step.view === 'ending') {
+      screen.innerHTML = `<div class="demo-topline">${tabletBrand}<span>Jeanne</span></div><div class="demo-ending"><span class="demo-ending-mark">${icon('heart')}</span><span class="demo-ending-kicker">UN MOMENT PARTAGÉ</span><h3>La conversation est terminée.</h3><p>Alice a bien reçu le message de Jeanne.</p><span class="demo-ending-replay">${icon('reset')} Touchez la tablette pour revoir la démo</span></div>`;
     } else {
       if (step.speaker === 'assistant') lastAssistant = step.text;
       const photo = step.view === 'photo';
@@ -169,6 +200,7 @@ if('ResizeObserver' in window) new ResizeObserver(()=> {
 }).observe($('.phone-chat'));
 export function pauseDemo() { player.pause(); }
 function startFromTablet() {
+  prepareSoundEffects();
   if (player.state !== 'playing') player.play();
 }
 tablet.addEventListener('click', startFromTablet);
@@ -178,11 +210,12 @@ tablet.addEventListener('keydown', event => {
 $('.hero-tablet').addEventListener('click', event => {
   event.preventDefault();
   // Instant navigation keeps the screen visible before playback/offscreen checks.
-  history.replaceState(null, '', '#demo');
+  history.replaceState(null, '', `${location.pathname}${location.search}`);
   $('#demo-player').scrollIntoView({behavior: 'instant', block: 'start'});
   startFromTablet();
 });
 $('#demo-play').addEventListener('click', () => {
+  prepareSoundEffects();
   if (player.state === 'playing') player.pause();
   else {
     if (window.matchMedia('(max-width: 600px)').matches && (player.state === 'idle' || player.state === 'ended')) {

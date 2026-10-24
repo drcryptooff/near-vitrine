@@ -1,0 +1,170 @@
+/* Alice's outbound message is a visual prologue, driven by the audio timeline. */
+#alice-message{transition:opacity .35s,transform .6s cubic-bezier(.22,.8,.22,1)}
+.demo-player[data-family=idle] #alice-message,.demo-player[data-family=compose] #alice-message{opacity:0;transform:translateY(35px) scale(.92);visibility:hidden}
+.demo-player[data-family=send] #alice-message{animation:message-send .6s cubic-bezier(.22,.8,.22,1) both}
+.phone-compose{display:flex;align-items:center;gap:8px;transition:background .3s}
+.family-draft{flex:1;min-width:0;text-align:left}
+.family-draft img{display:block;width:100%;height:72px;object-fit:cover;border-radius:8px;margin-bottom:8px}
+.family-draft p{font-size:11px;line-height:1.6;color:var(--ink)}
+.draft-caret{display:inline-block;width:1px;height:1em;background:var(--green);vertical-align:-.1em;animation:typing-caret .75s steps(1) infinite}
+.send-symbol{display:grid;place-items:center;width:23px;height:23px;border-radius:50%;background:var(--green);color:white;font-size:18px;flex-shrink:0;align-self:flex-end;line-height:1}
+.demo-player[data-family=compose] .phone-compose{background:#fffdf8;border-color:#c6d6bd;box-shadow:0 3px 12px #213e3610;align-items:flex-end}
+.send-pulse{animation:send-tap .6s ease both}
+.family-stage-note{min-height:23px;margin-top:18px;text-align:center;font-size:12px;color:#6c776c;line-height:1.6}
+.family-arrival{height:100%;justify-content:center}
+.demo-player[data-family=send] .family-arrival .message-pill{animation:message-arrive .55s ease both}
+.demo-player[data-state=paused] .draft-caret,.demo-player[data-state=paused] #alice-message,.demo-player[data-state=paused] .send-pulse{animation-play-state:paused}
+@keyframes typing-caret{50%{opacity:0}}
+@keyframes message-send{from{opacity:0;transform:translateY(65px) scale(.92)}to{opacity:1;transform:none}}
+@keyframes send-tap{30%{transform:scale(.8)}70%{transform:scale(1.15)}100%{transform:none}}
+@keyframes message-arrive{from{opacity:0;transform:translateY(-12px)}to{opacity:1;transform:none}}
+
+/* The final phone reveal happens after the tablet has finished speaking. */
+.received-heading{display:block;color:#dae6d5;font-size:10px;line-height:1.5;margin-bottom:8px}
+.received-wave{flex:1;min-width:0;overflow:hidden;white-space:nowrap;font-size:11px;letter-spacing:-.8px}
+.received-message>div>span:last-child{white-space:nowrap;font-size:10px}
+.phone-transcript{margin-top:8px;padding:10px;background:#202b23;border:1px solid #35493a;border-radius:9px;color:#e5ebdf;animation:transcript-arrive .3s ease both}
+.phone-transcript>span{display:block;color:#a5b59c;font-size:8px;margin-bottom:5px}
+.phone-transcript p{font-size:11px;line-height:1.6;margin:0}
+.demo-player[data-receipt=audio] .received-message{animation:message-send .35s ease both}
+.demo-player[data-receipt=transcript] .received-message{animation:none}
+.demo-player:is([data-receipt=audio],[data-receipt=transcript]) .demo-phone-column{z-index:4;transform:translateX(-18px) scale(1.06);transition:transform .36s cubic-bezier(.22,.8,.22,1)}
+.demo-player:is([data-receipt=audio],[data-receipt=transcript]) .phone-compose{visibility:hidden}
+.demo-player:is([data-receipt=audio],[data-receipt=transcript]) .chat-date{display:none}
+.demo-player:is([data-receipt=audio],[data-receipt=transcript]) #alice-message{display:grid;grid-template-columns:40px 1fr;gap:3px 7px;max-width:none;margin-bottom:12px;padding:6px;background:#1b3229;opacity:.7}
+.demo-player:is([data-receipt=audio],[data-receipt=transcript]) #alice-message img{grid-row:1/3;width:40px;height:40px}
+.demo-player:is([data-receipt=audio],[data-receipt=transcript]) #alice-message p{font-size:7px;line-height:1.45;margin:0}
+.demo-player:is([data-receipt=audio],[data-receipt=transcript]) #alice-message small{font-size:6px}
+.demo-player:is([data-receipt=audio],[data-receipt=transcript]) .received-message{max-width:none;margin-top:0;padding:10px}
+.demo-player:is([data-receipt=audio],[data-receipt=transcript]) .received-message>div{font-size:12px;gap:7px}
+.demo-player:is([data-receipt=audio],[data-receipt=transcript]) .received-message small{font-size:7px;margin-top:5px}
+@keyframes transcript-arrive{from{opacity:0;transform:translateY(7px)}to{opacity:1;transform:none}}
+@media(prefers-reduced-motion:no-preference){
+  .demo-senior-column{transition:transform .8s cubic-bezier(.4,0,.2,1),opacity .4s,max-height .5s,visibility 0s .8s}
+  .demo-player[data-jeanne=visible] .demo-senior-column{transition:transform .8s cubic-bezier(.4,0,.2,1),opacity .45s,max-height .5s,visibility 0s}
+}
+
+/* A compact stage keeps both devices in view on a phone. */
+@media(max-width:900px) and (min-width:601px){
+  .demo-senior-column{margin-inline:auto}
+  .demo-player[data-jeanne=visible] .demo-senior-column{margin-top:22px}
+}
+@media(max-width:600px){
+  .demo-stage{display:block;order:0;position:relative;width:100%;max-width:360px;height:390px;min-height:0;isolation:isolate;margin:0 auto}
+  .demo-tablet-column{position:absolute;left:4px;top:9px;width:252px;max-width:none;margin:0;z-index:3;transform-origin:100% 50%;transition:transform .8s cubic-bezier(.4,0,.2,1),filter .6s}
+  .demo-tablet{width:252px;height:353px;padding:15px 10px 11px;border-radius:25px}
+  .assistant-words{font-size:20px;line-height:1.4}
+  .demo-home strong{font-size:25px}
+  .demo-home .touch-halo{width:65px;height:65px;margin:14px 0 10px}
+  .demo-home .message-pill{font-size:10px}
+  .demo-scene-content{padding:14px}
+  .demo-scene-content.with-photo .demo-photo{height:133px}
+  .demo-scene-content .caption{font-size:13px;line-height:1.5}
+  .demo-avatar{width:36px;height:36px;margin-bottom:12px}
+  .listening-place{margin-top:12px;height:38px}
+  .demo-phone-column{display:block;position:absolute;right:4px;top:49px;width:153px;max-width:none;z-index:1;transform:translate(0,8px) rotate(7deg) scale(.97);transform-origin:50% 65%;transition:transform .7s cubic-bezier(.22,.8,.22,1),filter .7s;filter:brightness(.94)}
+  .demo-phone-column .device-label{display:none}
+  .demo-phone{width:153px;height:294px;padding:12px 6px 10px;border-radius:25px;box-shadow:0 3px 0 #080e09,0 13px 24px #26372d28,inset 0 0 0 2px #494c47}
+  .phone-header{padding-top:15px}
+  .chat-bubble img{height:59px}
+  .chat-bubble p{font-size:7px;line-height:1.5}
+  .received-message p{font-size:7px}
+  .received-message>div{font-size:10px}
+  .phone-compose{bottom:17px}
+  .demo-player[data-focus=family] .demo-tablet-column{transform:translate(-3px,-3px) rotate(-4deg) scale(.94);filter:brightness(.98)}
+  .demo-player[data-focus=family] .demo-phone-column{z-index:4;transform:translate(-7px,-10px) rotate(0) scale(1.06);filter:none}
+  .demo-player[data-focus=family] .demo-phone{box-shadow:0 3px 0 #080e09,0 15px 28px #26372d45,inset 0 0 0 2px #494c47}
+  .demo-player[data-state=playing] .demo-tablet-column,.demo-player[data-state=playing] .demo-phone-column{will-change:transform}
+  .family-stage-note{display:none}
+  .demo-player[data-speaker=family] .demo-phone-column{transform:translate(-22px,-7px) scale(1.25)}
+  .demo-player[data-speaker=family] .demo-tablet-column{transform:translate(-18px,4px) rotate(-5deg) scale(.88);filter:brightness(.94)}
+  .demo-player[data-speaker=family] .phone-compose{left:9px;right:9px;padding:7px;gap:5px}
+  .demo-player[data-speaker=family] .family-draft img{height:65px;margin-bottom:6px}
+  .demo-player[data-speaker=family] .family-draft p,.demo-player[data-family=send] .chat-bubble p{font-size:8px;line-height:1.5}
+  .demo-player[data-family=send] .chat-bubble img{height:80px}
+  .send-symbol{width:17px;height:17px;font-size:13px}
+  /* Jeanne enters beside the tablet; neither device creates another row. */
+  .demo-senior-column{position:absolute;left:calc((100vw - 100%) / -2);top:64px;bottom:auto;width:142px;max-width:none;height:290px;max-height:none;min-height:0;display:flex;flex-direction:column;gap:0;z-index:5;margin:0;overflow:visible;align-items:center;justify-content:flex-end;transform:translateX(-160px);transition:transform .8s cubic-bezier(.4,0,.2,1),opacity .4s,visibility 0s .8s}
+  .demo-player[data-jeanne=visible] .demo-senior-column{max-height:none;margin:0;transform:translateX(0);transition:transform .8s cubic-bezier(.4,0,.2,1),opacity .45s,visibility 0s}
+  .demo-senior-column .jeanne-portrait{order:1;width:142px;height:142px;margin:0}
+  .demo-senior-column .demo-caption{order:0;flex:0 0 auto;width:156px;min-height:0;max-height:200px;display:flex;margin:0 0 0 32px;padding:13px 14px;border-radius:16px 16px 16px 4px;box-shadow:0 8px 24px #70563c0b}
+  .demo-senior-column .demo-caption>p{font-size:14px;line-height:1.55}
+  .demo-senior-column .demo-caption>span{font-size:11px;margin-bottom:5px}
+  .demo-senior-column .demo-caption:after{top:auto;bottom:-6px;left:30px;width:14px;height:14px}
+  .demo-player[data-jeanne=visible] .demo-tablet-column{transform:translate(80px,5px) rotate(3deg) scale(.78);transform-origin:100% 50%;filter:none}
+  .demo-player[data-jeanne=visible] .demo-phone-column{transform:translate(0,8px) rotate(7deg) scale(.97);z-index:1;filter:brightness(.92)}
+  .demo-player-controls{margin-top:0}
+  .mobile-receipt.delivered,.mobile-receipt.kept{display:none}
+  .demo-player[data-focus=family] .mobile-receipt.delivered{display:flex}
+  .demo-player:is([data-receipt=audio],[data-receipt=transcript]) .demo-phone-column{right:10px;top:12px;width:200px;transform:none;filter:none;transition:transform .36s cubic-bezier(.22,.8,.22,1)}
+  .demo-player:is([data-receipt=audio],[data-receipt=transcript]) .demo-phone{width:200px;height:366px;border-radius:29px;padding:13px 8px 10px}
+  .demo-player:is([data-receipt=audio],[data-receipt=transcript]) .phone-header{padding:15px 3px 8px;gap:7px}
+  .demo-player:is([data-receipt=audio],[data-receipt=transcript]) .phone-header .avatar{width:24px;height:24px}
+  .demo-player:is([data-receipt=audio],[data-receipt=transcript]) .phone-header strong{font-size:10px}
+  .demo-player:is([data-receipt=audio],[data-receipt=transcript]) .phone-header small{font-size:7px}
+  .demo-player:is([data-receipt=audio],[data-receipt=transcript]) .phone-chat{padding:9px 5px}
+  .demo-player:is([data-receipt=audio],[data-receipt=transcript]) .demo-tablet-column{transform:translate(-8px,-3px) rotate(-4deg) scale(.92)}
+  .demo-player:is([data-receipt=audio],[data-receipt=transcript]) .phone-transcript p{font-size:11px;line-height:1.55}
+  .demo-player:is([data-receipt=audio],[data-receipt=transcript]) .received-message svg{width:13px;height:13px}
+}
+@media(max-width:360px){
+  .demo-stage{height:356px}
+  .demo-tablet-column{left:0;width:226px}
+  .demo-tablet{width:226px;height:322px;padding-inline:9px}
+  .demo-topline{padding:9px 11px;font-size:10px}
+  .demo-scene-content{padding:12px}
+  .assistant-words{font-size:18px;line-height:1.37}
+  .demo-scene-content.with-photo .demo-photo{height:115px}
+  .demo-scene-content .caption{font-size:12px}
+  .demo-home{gap:14px}
+  .demo-home strong{font-size:23px}
+  .demo-home .touch-halo{width:58px;height:58px;margin:12px 0 8px}
+  .demo-home .message-pill{font-size:9px;padding-inline:8px}
+  .demo-phone-column{right:5px;top:47px;width:136px}
+  .demo-phone{width:136px;height:266px;border-radius:23px}
+  .chat-bubble img{height:49px}
+  .phone-header .avatar{width:20px;height:20px}
+  .phone-header strong{font-size:8px}
+  .phone-chat{padding-inline:3px}
+  .chat-bubble p{font-size:6px}
+  .received-message>div{font-size:9px;gap:4px}
+  .received-message p{font-size:6px}
+  .demo-senior-column{top:46px;width:120px;height:270px}
+  .demo-senior-column .jeanne-portrait{width:120px;height:120px}
+  .demo-senior-column .demo-caption{width:142px;margin-left:26px;padding:12px;font-size:13px}
+  .demo-senior-column .demo-caption>p{font-size:13px;line-height:1.5}
+  .demo-player[data-jeanne=visible] .demo-tablet-column{transform:translate(52px,4px) rotate(3deg) scale(.70)}
+  .demo-player[data-speaker=family] .demo-phone-column{transform:translate(-15px,-7px) scale(1.25)}
+  .demo-player[data-speaker=family] .family-draft img{height:48px}
+  .demo-player[data-family=send] .chat-bubble img{height:65px}
+  .family-stage-note{font-size:12px}
+  .demo-player:is([data-receipt=audio],[data-receipt=transcript]) .demo-phone-column{right:4px;top:10px;width:180px}
+  .demo-player:is([data-receipt=audio],[data-receipt=transcript]) .demo-phone{width:180px;height:330px;border-radius:26px}
+  .demo-player:is([data-receipt=audio],[data-receipt=transcript]) .phone-chat{padding:7px 3px}
+  .demo-player:is([data-receipt=audio],[data-receipt=transcript]) #alice-message{margin-bottom:8px}
+  .demo-player:is([data-receipt=audio],[data-receipt=transcript]) .phone-transcript{padding:8px;margin-top:6px}
+  .demo-player:is([data-receipt=audio],[data-receipt=transcript]) .phone-transcript p{font-size:10px}
+  .demo-player:is([data-receipt=audio],[data-receipt=transcript]) .received-message{padding:8px}
+}
+@media(prefers-reduced-motion:reduce){
+  .demo-tablet-column,.demo-phone-column,.demo-senior-column,#alice-message{transition:none!important}
+  #alice-message,.send-pulse,.family-arrival .message-pill,.draft-caret,.received-message,.phone-transcript{animation:none!important}
+}
+@media(max-width:600px) and (prefers-reduced-motion:no-preference){
+  .demo-senior-column{transition:transform .8s cubic-bezier(.4,0,.2,1),opacity .4s,visibility 0s .8s}
+  .demo-player[data-jeanne=visible] .demo-senior-column{transition:transform .8s cubic-bezier(.4,0,.2,1),opacity .45s,visibility 0s}
+}
+
+/* Long replies get a wider bubble instead of a narrow, tall stack of words. */
+@media(max-width:600px){
+  .demo-player[data-jeanne-text=long] .demo-senior-column{top:24px;width:164px;height:330px}
+  .demo-player[data-jeanne-text=long] .demo-caption{width:184px;max-height:none;margin-left:18px;padding:14px 16px;align-items:stretch;align-self:flex-start}
+  .demo-player[data-jeanne-text=long] .demo-caption>p{font-size:14px;line-height:1.5;text-align:left}
+  .demo-player[data-jeanne=visible][data-jeanne-text=long] .demo-tablet-column{transform:translate(90px,5px) rotate(2deg) scale(.72)}
+}
+@media(max-width:360px){
+  .demo-player[data-jeanne-text=long] .demo-senior-column{top:16px;width:142px;height:300px}
+  .demo-player[data-jeanne-text=long] .demo-caption{position:absolute;top:0;left:18px;width:calc(100vw - 36px);margin:0;padding:13px 14px}
+  .demo-player[data-jeanne-text=long] .demo-caption>p{font-size:13px;line-height:1.5}
+  .demo-player[data-jeanne=visible][data-jeanne-text=long] .demo-tablet-column{transform:translate(58px,32px) rotate(2deg) scale(.66)}
+}

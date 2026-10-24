@@ -1,0 +1,96 @@
+/* Bloc « Projet suisse · nLPD » */
+.swiss-section{padding-top:0}
+.swiss-card{position:relative;overflow:hidden;display:grid;grid-template-columns:230px 1fr;gap:34px 60px;align-items:center;background:var(--green);color:var(--paper);border-radius:34px;padding:64px 70px 58px;box-shadow:0 30px 60px -30px #1e493666}
+.swiss-card:before{content:'';position:absolute;right:-60px;top:-60px;width:260px;height:260px;background:#fff;opacity:.045;clip-path:polygon(35% 0,65% 0,65% 35%,100% 35%,100% 65%,65% 65%,65% 100%,35% 100%,35% 65%,0 65%,0 35%,35% 35%);pointer-events:none}
+
+/* Sceau : anneau de texte et cadenas animé */
+.swiss-seal{position:relative;width:200px;height:200px;margin-inline:auto}
+.seal-ring{position:absolute;inset:0;width:100%;height:100%;stroke:none;animation:seal-spin 38s linear infinite}
+.seal-ring text{fill:#c7d4b9;font-family:var(--sans);font-size:12.5px;font-weight:500;letter-spacing:5.2px}
+.seal-ring circle{fill:none;stroke:#ffffff26;stroke-width:1;stroke-dasharray:2 5}
+@keyframes seal-spin{to{transform:rotate(360deg)}}
+
+.seal-lock{position:absolute;left:50%;top:50%;width:96px;height:112px;transform:translate(-50%,-54%);stroke:none;overflow:visible;filter:drop-shadow(0 12px 16px #0000004d)}
+.seal-lock *{transform-box:fill-box;transform-origin:center}
+.lock-shackle{fill:none;stroke:#eef3ea;stroke-width:11;stroke-linecap:round}
+.lock-body>rect{fill:#d52b1e}
+.lock-cross{fill:#fff}
+.lock-shine{fill:#fff;opacity:0}
+.lock-pulse{fill:none;stroke:#f3dfca;stroke-width:1.6;opacity:0}
+
+/* Le cadenas s’ouvre puis se ferme quand le bloc apparaît. Sans animation, il reste fermé. */
+.swiss-card.visible .lock-shackle{animation:lock-close .75s cubic-bezier(.45,0,.3,1.35) .5s both}
+.swiss-card.visible .lock-body{animation:lock-click .4s ease-out 1.1s both}
+.swiss-card.visible .lock-shine{animation:lock-shine 5s ease-in-out 1.4s infinite}
+.swiss-card.visible .lock-pulse{animation:lock-pulse 3.2s ease-out 1.15s infinite}
+.swiss-card.visible .lock-pulse-late{animation-delay:2.75s}
+@keyframes lock-close{0%,25%{transform:translateY(-17px)}70%{transform:translateY(2px)}100%{transform:translateY(0)}}
+@keyframes lock-click{0%{transform:scale(1)}35%{transform:scale(1.08) rotate(-2deg)}70%{transform:scale(.98) rotate(1deg)}100%{transform:none}}
+@keyframes lock-shine{0%{transform:translateX(0);opacity:0}8%{opacity:.35}30%{transform:translateX(120px);opacity:.35}31%,100%{transform:translateX(120px);opacity:0}}
+@keyframes lock-pulse{0%{transform:scale(.7);opacity:.6}100%{transform:scale(1.55);opacity:0}}
+
+.swiss-copy .eyebrow{color:#c7d4b9}
+.swiss-eyebrow-short{display:none}
+.swiss-copy h2{margin:18px 0 20px;color:#fff}
+.swiss-copy h2 em{color:#f3dfca}
+.swiss-copy>p:last-child{font-size:13px;line-height:1.9;color:#d7e0d2;max-width:560px}
+.swiss-copy strong{color:#fff;font-weight:500}
+
+.swiss-mini-flag{display:inline-block;width:14px;height:14px;border-radius:3px;flex-shrink:0;background:#d52b1e url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cpath d='M13 6h6v7h7v6h-7v7h-6v-7H6v-6h7Z' fill='%23fff'/%3E%3C/svg%3E") center/100% no-repeat}
+
+.swiss-points{grid-column:1/-1;list-style:none;margin:16px 0 0;padding:0;display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
+.swiss-points li{background:#ffffff0f;border:1px solid #ffffff1f;border-radius:20px;padding:24px 22px 22px}
+.swiss-points svg,.swiss-points .swiss-mini-flag{width:22px;height:22px;color:#f3dfca;margin-bottom:16px}
+.swiss-points .swiss-mini-flag{border-radius:5px}
+.swiss-points h3{font-size:19px;line-height:1.2;color:#fff;margin-bottom:9px}
+.swiss-points p{font-size:11px;line-height:1.75;color:#cbd6c6}
+.swiss-points .swiss-roadmap{background:#f3dfca;border-color:#f3dfca}
+.swiss-roadmap h3{color:var(--ink)}
+.swiss-roadmap p{color:#6b5a4b}
+
+.promise-strip .swiss-mini-flag{width:16px;height:16px}
+
+@media(max-width:1100px){
+  .swiss-card{padding:54px 48px 48px;gap:30px 44px;grid-template-columns:190px 1fr}
+  .swiss-seal{width:180px;height:180px}
+  .seal-lock{width:86px;height:100px}
+  .swiss-points{grid-template-columns:1fr 1fr}
+}
+@media(max-width:800px){
+  .swiss-card{grid-template-columns:1fr;text-align:center;padding:46px 32px 36px}
+  .swiss-seal{width:170px;height:170px}
+  .swiss-copy .eyebrow{justify-content:center}
+  .swiss-copy>p:last-child{margin-inline:auto}
+  .swiss-points{text-align:left}
+}
+
+/* Téléphone : bloc plus court, cartes en lignes avec l’icône à gauche */
+@media(max-width:600px){
+  .swiss-section{padding-bottom:48px}
+  .swiss-card{border-radius:24px;padding:28px 14px 14px;gap:16px;box-shadow:0 20px 40px -26px #1e493680}
+  .swiss-card:before{display:none}
+  .swiss-seal{width:148px;height:148px}
+  .seal-ring text{font-size:13.5px}
+  .seal-lock{width:72px;height:84px}
+  .swiss-copy{padding-inline:6px}
+  .swiss-copy .eyebrow{font-size:11px;letter-spacing:1.4px;gap:8px}
+  .swiss-eyebrow-long{display:none}
+  .swiss-eyebrow-short{display:inline}
+  .swiss-copy h2{font-size:32px;margin:12px 0}
+  .swiss-copy>p:last-child{font-size:15px;line-height:1.65}
+  .swiss-points{grid-template-columns:1fr;gap:8px;margin-top:4px}
+  .swiss-points li{display:grid;grid-template-columns:40px 1fr;column-gap:14px;align-items:start;padding:16px 16px 15px;border-radius:18px}
+  .swiss-points li>svg,.swiss-points li>.swiss-mini-flag{grid-row:1/3;width:40px;height:40px;margin:0;box-sizing:border-box}
+  .swiss-points li>svg{padding:10px;background:#ffffff14;border-radius:50%}
+  .swiss-points li>.swiss-mini-flag{border-radius:12px;background-size:62%}
+  .swiss-points h3{font-size:19px;margin:1px 0 4px}
+  .swiss-points p{font-size:14px;line-height:1.6}
+}
+@media(max-width:360px){
+  .swiss-card{padding-inline:10px}
+  .swiss-copy h2{font-size:29px}
+  .swiss-points li{grid-template-columns:34px 1fr;column-gap:12px;padding:14px 13px}
+  .swiss-points li>svg,.swiss-points li>.swiss-mini-flag{width:34px;height:34px}
+  .swiss-points li>svg{padding:8px}
+  .swiss-points h3{font-size:18px}
+}

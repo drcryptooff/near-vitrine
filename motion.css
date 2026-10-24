@@ -1,0 +1,59 @@
+/* Animations au défilement, actives seulement avec la classe .motion (motion.js). */
+:root{--m-ease:cubic-bezier(.2,.75,.15,1)}
+
+/* Barre de progression de lecture */
+.scroll-progress{position:fixed;inset:0 0 auto;height:3px;z-index:60;background:linear-gradient(90deg,var(--green),#9d7957 60%,#d52b1e);transform:scaleX(0);transform-origin:left;pointer-events:none}
+
+/* Titres : chaque ligne monte depuis sous sa propre ligne */
+.motion .m-line{display:block;overflow:hidden;padding:.1em 0 .14em;margin:-.1em 0 -.14em}
+.motion .m-line>span{display:block;translate:0 110%;rotate:2deg;transform-origin:left bottom;transition:translate 1s var(--m-ease),rotate 1s var(--m-ease);transition-delay:calc(var(--m-d,0ms) + var(--m-l)*120ms)}
+.motion .m-title.m-in .m-line>span{translate:none;rotate:none}
+
+/* Apparitions : montée douce, glissement latéral, montée avec rebond, pop */
+.motion .m-item{opacity:0;translate:0 36px;transition:opacity .8s var(--m-ease),translate .9s var(--m-ease),scale .9s var(--m-ease),rotate .9s var(--m-ease),transform .35s var(--m-ease);transition-delay:var(--m-d,0ms),var(--m-d,0ms),var(--m-d,0ms),var(--m-d,0ms),0s}
+.motion .m-item.m-left{translate:-48px 0}
+.motion .m-item.m-rise{translate:0 70px;scale:.94}
+.motion .m-item.m-pop{scale:.6;rotate:-10deg;transition-timing-function:cubic-bezier(.34,1.56,.64,1)}
+.motion .m-item.m-in{opacity:1;translate:none;scale:none;rotate:none}
+
+/* Trait des sur-titres de section qui se dessine */
+.motion .section-kicker{position:relative;border-bottom-color:transparent}
+.motion .section-kicker:after{content:'';position:absolute;left:0;right:0;bottom:-1px;height:1px;background:currentColor;opacity:.35;transform:scaleX(0);transform-origin:left;transition:transform 1.4s var(--m-ease) .15s}
+.motion .section-kicker.m-in:after{transform:none}
+
+/* Photo : se dévoile comme un rideau, puis l’image glisse en parallaxe */
+.motion .editorial-photo{opacity:1;translate:none;clip-path:inset(18% 8% 18% 8% round 22px);transition:clip-path 1.4s var(--m-ease)}
+.motion .editorial-photo.m-in{clip-path:inset(0 round 8px)}
+.motion .editorial-photo>img{scale:1.14;translate:0 var(--m-p,0)}
+.motion .editorial-photo .photo-caption{opacity:0;translate:-30px 0;transition:opacity .9s var(--m-ease) .7s,translate .9s var(--m-ease) .7s}
+.motion .editorial-photo.m-in .photo-caption{opacity:1;translate:none}
+
+/* Parallaxe léger de l’accueil, du sceau suisse et de l’étoile du contact */
+.motion .scene-orbit,.motion .scene-star,.motion .contact-spark,.motion .swiss-seal{translate:0 var(--m-p,0)}
+
+/* Journée : le soleil et la lune se lèvent quand la carte apparaît */
+.motion .day-grid .sun-disc,.motion .day-grid .moon-disc{translate:0 60px;opacity:0;transition:translate 1.4s var(--m-ease) .35s,opacity 1s ease .35s}
+.motion .day-grid .m-in .sun-disc,.motion .day-grid .m-in .moon-disc{translate:none;opacity:1}
+.motion .day-grid .day-message{opacity:0;scale:.85;transition:opacity .6s ease .8s,scale .6s cubic-bezier(.34,1.56,.64,1) .8s}
+.motion .day-grid .m-in .day-message{opacity:1;scale:none}
+
+/* Numéros de la différence qui changent de couleur à l’arrivée */
+.motion .difference-list .feature-number{transition:color .8s ease .4s}
+.motion .difference-list .m-in .feature-number{color:var(--green)}
+
+/* Survol : les cartes se soulèvent légèrement (souris uniquement) */
+@media(hover:hover){
+  .motion .trust-points>.m-in:hover,.motion .swiss-points>.m-in:hover,.motion .two-world-grid>.m-in:hover,.motion .day-grid>.m-in:hover{transform:translateY(-6px)}
+  .motion .difference-list>.m-in:hover{transform:translateX(10px)}
+}
+
+/* Téléphone : trajets plus courts pour rester fluide */
+@media(max-width:600px){
+  .motion .m-item:not(.m-in){translate:0 24px}
+  .motion .m-item.m-left:not(.m-in){translate:-28px 0}
+  .motion .m-item.m-rise:not(.m-in){translate:0 40px;scale:.96}
+  .motion .editorial-photo{clip-path:inset(10% 5% 10% 5% round 16px)}
+  .motion .editorial-photo.m-in{clip-path:inset(0 round 6px)}
+}
+/* Téléphone : l’étoile du contact chevauchait le point d’interrogation du titre */
+@media(max-width:600px){.contact-section .contact-spark{top:14px;right:6%;font-size:28px}}

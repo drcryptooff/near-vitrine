@@ -1,0 +1,68 @@
+/* Alice mirrors Jeanne at the opposite edge, while composing her message. */
+.demo-stage{position:relative}
+.demo-alice-column{position:absolute;right:calc((100vw - 100%) / -2 + 7.5px);bottom:50px;z-index:35;width:230px;overflow:hidden;pointer-events:none;opacity:0;visibility:hidden;transition:opacity .16s,visibility 0s .32s}
+.alice-content{width:100%;display:flex;flex-direction:column;align-items:center;transform:translateX(calc(100% + 25px));transition:transform .32s cubic-bezier(.22,.8,.22,1)}
+.demo-player[data-alice=visible] .demo-alice-column{opacity:1;visibility:visible;transition-delay:0s}
+.demo-player[data-alice=visible] .alice-content{transform:none}
+.alice-portrait{position:relative;width:230px;height:230px;isolation:isolate}
+.alice-art{position:absolute;inset:0;background:url('assets/alice-typing.png') center/contain no-repeat;transform-origin:50% 85%}
+.alice-art:after{content:'';position:absolute;inset:0;background:inherit;clip-path:ellipse(22% 13% at 43% 73%);animation:alice-thumbs .35s steps(2,end) infinite;animation-play-state:paused}
+.alice-name{font:23px/1.3 var(--serif);text-align:center;margin-top:12px}
+.alice-name span{display:block;font:12px/1.6 var(--sans);color:#947254;margin-top:5px}
+.alice-typing-dots{position:absolute;left:7%;top:13%;display:flex;gap:5px;padding:11px 13px;background:#fff9ed;border:1px solid #e3d5bf;border-radius:16px 16px 3px 16px;box-shadow:0 4px 12px #6243240a;opacity:0;transform:translateY(5px);transition:opacity .15s,transform .15s}
+.alice-typing-dots i{width:5px;height:5px;border-radius:50%;background:#947254;animation:alice-dot 1s ease-in-out infinite;animation-play-state:paused}
+.alice-typing-dots i:nth-child(2){animation-delay:.15s}.alice-typing-dots i:nth-child(3){animation-delay:.3s}
+.demo-player[data-family=compose] .alice-typing-dots{opacity:1;transform:none}
+.demo-player[data-typing=active] .alice-typing-dots i{animation-play-state:running}
+.demo-player[data-family=compose][data-typing=done] .alice-typing-dots{opacity:0}
+@keyframes alice-dot{0%,60%,100%{transform:none;opacity:.45}30%{transform:translateY(-3px);opacity:1}}
+.alice-heart-bubble{position:absolute;left:14%;top:0;display:flex;align-items:center;gap:4px;padding:10px 13px;background:#fff9ed;border:1px solid #e3d5bf;border-radius:17px 17px 4px 17px;box-shadow:0 4px 12px #6243240a;font-size:29px;line-height:1;opacity:0;visibility:hidden;transform:translateY(10px) scale(.7);transform-origin:bottom right;transition:opacity .25s .2s,transform .4s .2s cubic-bezier(.22,.8,.22,1),visibility 0s .2s}
+.alice-heart-bubble span{font-size:20px;transform:translateY(-5px) rotate(10deg)}
+.demo-player[data-alice-mood=happy] .alice-heart-bubble{opacity:1;visibility:visible;transform:none}
+.tablet-brand{display:inline-flex;align-items:center;gap:7px;font:500 17px/1 var(--sans);letter-spacing:-.7px;color:var(--green)}
+.near-logo{display:inline-block;width:34px;height:25px;object-fit:contain;flex-shrink:0}
+.tablet-brand .near-logo{width:25px;height:20px}
+.project-mark .near-logo{width:85px;height:65px;margin-bottom:13px}
+.demo-topline .tablet-brand .brand-face{width:22px;height:21px;gap:6px;padding-top:1px;transform:none;margin:0}
+.demo-topline .tablet-brand .brand-face i{width:6px;height:6px}
+.demo-topline .tablet-brand .brand-face:after{left:2px;bottom:1px;width:17px;height:9px;border-width:2px;border-top:0}
+.demo-player[data-typing=active] .alice-art{animation:alice-typing 1.8s ease-in-out infinite}
+.demo-player[data-typing=active] .alice-art:after{animation-play-state:running}
+@keyframes alice-thumbs{0%,100%{transform:translateY(0)}50%{transform:translateY(.9px) rotate(.2deg)}}
+@keyframes alice-typing{0%,100%{transform:rotate(0)}50%{transform:rotate(-.4deg)}}
+@media(min-width:901px) and (max-width:1150px){
+  .demo-alice-column,.alice-portrait{width:180px}.alice-portrait{height:180px}
+}
+@media(min-width:601px) and (max-width:900px){
+  .demo-alice-column{width:145px;bottom:40px}.alice-portrait{width:145px;height:145px}.alice-name{font-size:19px}
+  .demo-player[data-alice=visible] .demo-phone-column{position:relative;z-index:4;transform:translateX(-95px) scale(.98);transition:transform .32s cubic-bezier(.22,.8,.22,1)}
+  .demo-player[data-alice=visible] .demo-tablet-column{transform:translateX(-25px) scale(.88);transition:transform .32s cubic-bezier(.22,.8,.22,1)}
+}
+@media(max-width:600px){
+  .demo-alice-column{position:absolute;right:calc((100vw - 100%) / -2 + 7.5px);bottom:auto;top:125px;width:138px;z-index:6}
+  .alice-portrait{width:138px;height:165px}
+  .alice-art{background-position:50% 100%}
+  .alice-name{font-size:17px;line-height:1.3;margin:5px 0 0}
+  .alice-name span{display:none}
+  .alice-typing-dots{left:0;top:18%;padding:8px 10px;gap:4px}.alice-typing-dots i{width:4px;height:4px}
+  .alice-heart-bubble{left:9%;top:5%;font-size:26px;padding:9px 11px}.alice-heart-bubble span{font-size:18px}
+  .tablet-brand{font-size:13px;gap:5px}
+  .demo-player[data-alice=visible] .demo-phone-column{transform:translate(-125px,-7px) scale(1.25)}
+  .demo-player[data-alice=visible] .demo-tablet-column{transform:translate(-14px,4px) rotate(-5deg) scale(.88)}
+  .demo-player[data-alice-mood=reading] .demo-phone-column,.demo-player[data-alice-mood=happy] .demo-phone-column{transform:translateX(-115px)}
+  .demo-player[data-typing=active] .alice-art:after{clip-path:ellipse(22% 12% at 43% 77%)}
+  .demo-player[data-family=compose] .family-draft p{min-height:60px}
+}
+.demo-player[data-family=compose] .phone-compose .send-symbol{align-self:flex-end;margin-bottom:1px}
+@media(max-width:360px){
+  .demo-alice-column{top:114px;width:118px}.alice-portrait{width:118px;height:145px}
+  .alice-name{font-size:15px}.alice-name span{font-size:9px}
+  .demo-player[data-alice=visible] .demo-phone-column{transform:translate(-105px,-7px) scale(1.25)}
+  .demo-player[data-alice-mood=reading] .demo-phone-column,.demo-player[data-alice-mood=happy] .demo-phone-column{transform:translateX(-88px)}
+  .demo-player[data-family=compose] .family-draft p{min-height:67px}
+}
+@media(prefers-reduced-motion:reduce){
+  .demo-alice-column,.alice-content{transition:none!important}
+  .alice-art,.alice-art:after,.alice-typing-dots i{animation:none!important}
+  .alice-heart-bubble{transition:none!important}
+}

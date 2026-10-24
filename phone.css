@@ -1,0 +1,67 @@
+/* The showcase reuses the family app's palette, wallpaper and message anatomy. */
+.demo-phone{color:#ecede8;background:#111312}
+.demo-phone .phone-header{position:relative;z-index:2;background:#181b1a;border-bottom:1px solid #262a28;margin-inline:-1px;padding-inline:4px}
+.demo-phone .phone-header strong{font-family:var(--sans);font-weight:500}
+.demo-phone .phone-header small{color:#a1a6a1}
+.demo-phone .phone-header .avatar{background:#f3dfca;color:#674f39}
+.demo-phone .phone-header>div{flex:1;min-width:0}
+.demo-phone .phone-actions{display:flex;gap:7px;margin-right:3px;color:#a1a6a1}
+.demo-phone .phone-actions svg{width:13px;height:13px;margin:0}
+.demo-phone .phone-chat{position:absolute;top:89px;bottom:48px;left:9px;right:9px;padding:10px 8px;overflow:auto;scrollbar-width:none;background:#0b0d0c url('assets/family-wallpaper.png') repeat;background-size:200px;display:flex;flex-direction:column;align-items:stretch;gap:9px}
+.demo-phone .phone-chat::-webkit-scrollbar{display:none}
+.demo-phone .chat-date{align-self:center;margin:0 0 4px;padding:3px 7px;border-radius:5px;background:#1a1d1c;color:#a1a6a1;font-size:7px;line-height:1.4}
+.demo-phone .chat-bubble{position:relative;flex-shrink:0;align-self:flex-end;width:83%;max-width:83%;margin:0 4px 0 0;background:#24493c;border-radius:8px 0 8px 8px;padding:4px;box-shadow:0 1px 3px #0005}
+.demo-phone .chat-bubble:after{content:'';position:absolute;right:-5px;top:0;border-top:7px solid #24493c;border-right:6px solid transparent}
+.demo-phone .chat-bubble img{display:block;width:100%;height:78px;object-fit:cover;border-radius:5px;margin-bottom:4px}
+.demo-phone .chat-bubble p{font-size:8px;line-height:1.5;margin:4px 3px}
+.demo-phone .chat-bubble small{font-size:6px;line-height:1.3;color:#a7bcb0;text-align:right;margin:3px}
+.demo-phone #phone-response{align-self:flex-start;width:88%;margin:0 0 0 4px;flex-shrink:0}
+.demo-phone .received-message{position:relative;max-width:none;margin:0;padding:8px 8px 5px;background:#1f2321;border-radius:0 8px 8px 8px;box-shadow:0 1px 3px #0005}
+.demo-phone .received-message:before{content:'';position:absolute;top:0;left:-5px;border-top:7px solid #1f2321;border-left:6px solid transparent}
+.demo-phone .voice-note{display:flex;align-items:center;gap:6px}
+.demo-phone .voice-face{position:relative;flex:0 0 23px;width:23px;height:23px;display:grid;place-items:center;border-radius:50%;background:#f3dfca;color:#674f39;font:14px var(--serif)}
+.demo-phone .voice-face>span{position:absolute;right:-3px;bottom:-3px;display:grid;place-items:center;width:11px;height:11px;border-radius:50%;background:#1f2321;color:#7fd3f5}
+.demo-phone .voice-face svg{width:9px;height:9px}
+.demo-phone .voice-play{display:flex;align-items:center;color:#a1a6a1}
+.demo-phone .voice-play svg{width:18px;height:22px;fill:currentColor;stroke:none}
+.demo-phone .voice-body{flex:1;min-width:0;display:flex;flex-direction:column;gap:2px}
+.demo-phone .voice-wave{display:flex;align-items:center;justify-content:space-between;height:25px;gap:1px}
+.demo-phone .voice-wave i{display:block;width:2px;max-height:23px;border-radius:2px;background:#6f7d73;flex-shrink:1}
+.demo-phone .voice-duration{font-size:7px;color:#a1a6a1;line-height:1.3}
+.demo-phone .phone-transcript{margin-top:7px;padding:7px 0 0;border:0;border-top:1px solid #353b37;border-radius:0;background:transparent;color:#ecede8;box-shadow:none}
+.demo-phone .phone-transcript p{font-size:11px;line-height:1.5;margin:0}
+.demo-phone .received-message .message-time{display:block;margin:5px 0 0;text-align:right;color:#a1a6a1;font-size:6px;line-height:1.3}
+.demo-phone .phone-compose{z-index:2;bottom:20px;left:12px;right:12px;min-height:26px;background:#202422;border:0;border-radius:17px;color:#a1a6a1;padding:5px 7px;gap:7px}
+.demo-phone .compose-plus{font-size:18px;line-height:1;color:#a1a6a1}
+.demo-phone .compose-placeholder{flex:1;text-align:left;font-size:8px}
+.demo-phone .send-symbol{align-self:center;background:#6fb592;color:#0c1410;width:22px;height:22px}
+.demo-phone .send-symbol svg{width:12px;height:12px}
+.demo-player[data-family=compose] .demo-phone .phone-compose{background:#202422;box-shadow:0 1px 5px #0006}
+.demo-player[data-family=compose] .demo-phone .family-draft p{color:#ecede8}
+
+.demo-player:is([data-receipt=audio],[data-receipt=transcript]) .demo-phone .phone-compose{visibility:visible}
+.demo-player:is([data-receipt=audio],[data-receipt=transcript]) .demo-phone .chat-date{display:block}
+.demo-player:is([data-receipt=audio],[data-receipt=transcript]) .demo-phone #alice-message{display:block;grid-template-columns:none;max-width:83%;width:83%;margin:0 4px 0 0;padding:4px;opacity:1;background:#24493c}
+.demo-player:is([data-receipt=audio],[data-receipt=transcript]) .demo-phone #alice-message img{width:100%;height:65px}
+.demo-player:is([data-receipt=audio],[data-receipt=transcript]) .demo-phone #alice-message p{font-size:8px;line-height:1.5;margin:4px 3px}
+.demo-player:is([data-receipt=audio],[data-receipt=transcript]) .demo-phone .received-message{padding:8px 8px 5px;background:#1f2321}
+.demo-player:is([data-receipt=audio],[data-receipt=transcript]) .demo-phone .phone-transcript{padding:7px 0 0;margin-top:7px;border-radius:0}
+.demo-player:is([data-receipt=audio],[data-receipt=transcript]) .demo-phone .phone-transcript p{font-size:11px;line-height:1.5}
+@media(max-width:600px){
+  .demo-phone .phone-chat{top:73px;bottom:42px;left:6px;right:6px;padding:8px 5px;gap:7px;background-size:150px}
+  .demo-phone .chat-bubble p{font-size:7px}
+  .demo-phone .chat-bubble img{height:54px}
+  .demo-phone .phone-compose{left:9px;right:9px;bottom:15px;padding:4px 6px;min-height:22px}
+  .demo-phone .send-symbol{width:17px;height:17px}
+  .demo-phone .compose-placeholder{font-size:7px}
+  .demo-phone .compose-plus{font-size:15px}
+  .demo-player:is([data-receipt=audio],[data-receipt=transcript]) .demo-phone .phone-chat{top:82px;bottom:45px;left:8px;right:8px;padding:9px 6px;gap:9px}
+  .demo-player:is([data-receipt=audio],[data-receipt=transcript]) .demo-phone .phone-compose{left:12px;right:12px;bottom:17px;min-height:25px}
+}
+@media(max-width:360px){
+  .demo-player:is([data-receipt=audio],[data-receipt=transcript]) .demo-phone .phone-transcript p{font-size:10px;line-height:1.45}
+  .demo-player:is([data-receipt=audio],[data-receipt=transcript]) .demo-phone .phone-chat{top:79px;bottom:43px;padding:8px 5px}
+  .demo-phone .voice-face{flex-basis:20px;width:20px;height:20px;font-size:12px}
+  .demo-phone .voice-note{gap:4px}
+  .demo-phone .voice-play svg{width:15px}
+}

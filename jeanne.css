@@ -1,0 +1,80 @@
+/* Jeanne enters from the viewport edge on her own recorded turn. */
+.demo-stage{gap:28px;align-items:center}
+.demo-senior-column{position:fixed;left:0;bottom:clamp(28px,8vh,100px);z-index:35;width:240px;display:flex;flex-direction:column;align-items:center;pointer-events:none;opacity:0;visibility:hidden;transform:translateX(calc(-100% - 30px));transition:transform .8s cubic-bezier(.4,0,.2,1),opacity .4s,visibility 0s .8s}
+.demo-player[data-jeanne=visible] .demo-senior-column{opacity:1;visibility:visible;transform:translateX(0);transition:transform .8s cubic-bezier(.4,0,.2,1),opacity .45s,visibility 0s}
+.demo-senior-column .demo-caption{position:relative;order:0;width:100%;min-height:136px;margin:0 0 20px;padding:18px 20px;border:0;border-radius:20px 20px 20px 4px;background:#f5e7d7;justify-content:center}
+.demo-senior-column .demo-caption:after{content:'';position:absolute;bottom:-9px;left:40px;width:20px;height:20px;background:inherit;transform:rotate(45deg);border-radius:0 0 4px 0}
+.demo-senior-column .demo-caption:not([data-speaker=senior]){visibility:hidden}
+.demo-senior-column .demo-caption>span{font-size:11px;letter-spacing:0;color:#806649;margin-bottom:8px}
+.demo-senior-column .demo-caption>p{font-size:15px;line-height:1.65;color:#5d4937}
+.demo-senior-column .demo-caption>p{margin:0;text-wrap:pretty;word-break:normal;overflow-wrap:normal;hyphens:none}
+.jeanne-portrait{position:relative;width:240px;height:240px;flex-shrink:0;isolation:isolate}
+.jeanne-portrait:before{content:'';position:absolute;inset:12% 1% 0;background:#dde5d5;border-radius:49% 51% 42% 42%;z-index:-1}
+.jeanne-art{position:absolute;inset:0;transform-origin:50% 85%}
+.jeanne-pose{position:absolute;inset:0;background-image:url('assets/jeanne-abstract.png');background-repeat:no-repeat;background-size:200% 200%;opacity:0;transition:opacity .32s ease}
+.pose-listening{background-position:0 0}
+.pose-speaking{background-position:100% 0}
+.pose-smiling{background-position:100% 100%}
+[data-pose=listening] .pose-listening,[data-pose=speaking] .pose-speaking,[data-pose=smiling] .pose-smiling{opacity:1}
+.pose-speaking:after{content:'';position:absolute;inset:0;background-image:inherit;background-repeat:no-repeat;background-size:200% 200%;background-position:100% 0;clip-path:ellipse(5% 2.7% at 63.5% 43%);animation:jeanne-mouth 1.2s steps(1,end) infinite}
+/* Mouth crops are registered to the speaking frame; the body stays still. */
+@keyframes jeanne-mouth{0%,100%{background-position:100% 0}25%,68%{background-position:5.7% 99.7%}45%,86%{background-position:5.7% -.9%}}
+.demo-player[data-speaker=senior] .jeanne-art{animation:jeanne-speech 2.1s ease-in-out infinite}
+@keyframes jeanne-speech{0%,100%{transform:rotate(0) translateY(0)}40%{transform:rotate(.6deg) translateY(-1px)}70%{transform:rotate(-.25deg) translateY(0)}}
+@keyframes jeanne-listen{0%,45%,100%{transform:rotate(0)}60%{transform:rotate(.8deg)}75%{transform:rotate(0)}}
+.demo-player:not([data-voicing=senior]) .jeanne-art,
+.demo-player:not([data-voicing=senior]) .pose-speaking:after{animation-play-state:paused}
+.jeanne-name{text-align:center;font-family:var(--serif);font-size:23px;line-height:1.3;margin-top:14px}
+.jeanne-name span{display:block;font:400 12px/1.6 var(--sans);color:#6c7d65;margin-top:5px}
+.demo-stage .connection-line{gap:8px}
+.demo-stage .connection-line span{width:12px}
+
+@media(min-width:901px) and (max-width:1150px){
+  .demo-stage{gap:20px}
+  .demo-senior-column{width:clamp(140px,16vw,190px)}
+  .jeanne-portrait{width:clamp(140px,16vw,190px);height:clamp(140px,16vw,190px)}
+  .demo-tablet{width:330px;height:455px}
+  .demo-stage .connection-line{display:none}
+  .demo-senior-column .demo-caption{padding:16px;min-height:144px}
+  .demo-senior-column .demo-caption>p{font-size:14px}
+}
+
+/* On narrower screens, reuse the portrait and bubble below the devices. */
+@media(max-width:900px){
+  .demo-stage{display:grid;grid-template-columns:320px 205px;gap:22px 28px;justify-content:center}
+  .demo-tablet-column{grid-column:1;grid-row:1}
+  .demo-phone-column{grid-column:2;grid-row:1}
+  .demo-stage .connection-line{display:none}
+  .demo-senior-column{position:relative;left:auto;bottom:auto;grid-column:1/-1;grid-row:2;flex:0 0 auto;flex-direction:row;gap:18px;width:100%;max-width:553px;max-height:0;min-height:0;align-items:center;transform:translateX(-100vw);overflow:hidden;transition:transform .8s cubic-bezier(.4,0,.2,1),opacity .4s,max-height .3s .3s,visibility 0s .8s}
+  .demo-player[data-jeanne=visible] .demo-senior-column{max-height:260px;overflow:visible;transition:transform .8s cubic-bezier(.4,0,.2,1),opacity .45s,max-height .3s,visibility 0s}
+  .jeanne-portrait{order:0;width:110px;height:110px;overflow:visible;border-radius:0;background:none}
+  .jeanne-portrait:before{display:none}
+  .jeanne-art{inset:0;width:auto;height:auto;transform-origin:50% 85%}
+  .demo-senior-column .demo-caption{order:1;flex:1;min-width:0;width:auto;min-height:0;margin:0;padding:16px 19px;border-radius:18px}
+  .demo-senior-column .demo-caption:after{left:-6px;bottom:auto;top:35px;width:15px;height:15px}
+  .jeanne-name{display:none}
+}
+@media(max-width:600px){
+  .demo-stage{display:contents}
+  .demo-tablet-column{order:0}
+  .demo-senior-column{order:3;gap:8px;margin-top:0;min-height:0;align-items:center}
+  .demo-player[data-jeanne=visible] .demo-senior-column{margin-top:18px}
+  .jeanne-portrait{width:90px;height:90px;margin-top:0}
+  .jeanne-art{width:auto;height:auto;left:0;top:0}
+  .demo-senior-column .demo-caption{padding:14px 16px;display:flex}
+  .demo-senior-column .demo-caption>p{font-size:15px;line-height:1.6}
+  .demo-senior-column .demo-caption>span{font-size:11px;margin-bottom:6px}
+  .demo-senior-column .demo-caption:after{top:26px}
+  .demo-phone-column{display:none}
+}
+@media(max-width:360px){
+  .demo-senior-column{gap:5px}
+  .jeanne-portrait{width:70px;height:70px}
+  .jeanne-art{width:auto;height:auto;left:0;top:0}
+  .demo-senior-column .demo-caption{padding:13px}
+}
+@media(prefers-reduced-motion:reduce){
+  .jeanne-art,.pose-speaking:after{animation:none!important}
+  .jeanne-pose{transition:none}
+  .demo-senior-column,.demo-player[data-jeanne=visible] .demo-senior-column{transition:none;transform:none}
+}

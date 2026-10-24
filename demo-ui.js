@@ -8,8 +8,6 @@ const $ = selector => document.querySelector(selector);
 const icon = name => `<svg aria-hidden="true"><use href="#i-${name}"/></svg>`;
 const tabletBrand='<span class="tablet-brand" aria-label="Near"><img class="near-logo" src="assets/near-logo.svg" alt="" aria-hidden="true"><span>Near.</span></span>';
 const aliceAvatar='<span class="alice-profile" aria-hidden="true"><img src="assets/alice-typing.png" alt="" decoding="async"></span>';
-const aliceContact=`<div class="tablet-contact">${aliceAvatar}<strong>Alice</strong></div>`;
-const aliceRecipient=`<div class="tablet-recipient">${aliceAvatar}<span>Pour <strong>Alice</strong></span></div>`;
 const waveHeights=[7,12,5,16,21,12,8,17,24,14,7,11,20,15,9,23,18,7,13,20,10,15,8,5];
 const voiceWave=()=>waveHeights.map(height=>`<i style="height:${height}px"></i>`).join('');
 const tabletAudio=state=>`<div class="tablet-audio ${state}" role="img" aria-label="${state==='recording'?'Votre message s’enregistre':'Votre message vocal, prêt à envoyer'}"><div class="tablet-audio-body"><span class="tablet-audio-icon" aria-hidden="true">${state==='recording'?icon('mic'):'♫'}</span><span class="tablet-audio-wave" aria-hidden="true">${[14,26,40,24,48,32,18].map((height,index)=>`<i style="height:${height*.55}px;--bar:${index}"></i>`).join('')}</span><span class="tablet-audio-time">${state==='recording'?'0:00':'0:05'}</span></div><small>${state==='recording'?'Votre message s’enregistre':'Votre message vocal'}</small></div>`;
@@ -123,14 +121,11 @@ function draw({state, index, total, step, muted}) {
     } else {
       if (step.speaker === 'assistant') lastAssistant = step.text;
       const photo = step.view === 'photo';
-      const contact = ['greeting','question','record'].includes(step.view);
       const completeMessage = ['sent','receipt','transcript','ending'].includes(step.view);
-      const portrait = contact
-        ? snapshot.recording !== 'none' || step.view === 'record' ? aliceRecipient : aliceContact
-        : `<span class="demo-avatar ${completeMessage ? 'complete' : ''}">${icon(completeMessage ? 'check' : 'sound')}</span>`;
+      const statusIcon = snapshot.recording !== 'none' ? '' : `<span class="demo-avatar ${completeMessage ? 'complete' : ''}">${icon(completeMessage ? 'check' : 'sound')}</span>`;
       const central = photo
-        ? `<div class="demo-person">${aliceAvatar}<strong>Alice</strong><small>Aujourd’hui</small></div><img class="demo-photo" src="assets/garden.svg" alt="Illustration de la photo du jardin d’Alice"><p class="caption">« Les fleurs du jardin sont enfin sorties ! Je t’embrasse. »</p>`
-        : `${portrait}<p class="assistant-words">${snapshot.recording==='recording'?'Je vous écoute.':lastAssistant}</p>${snapshot.recording!=='none'?tabletAudio(snapshot.recording):''}`;
+        ? `<div class="demo-person">${aliceAvatar}<strong>Alice</strong></div><img class="demo-photo" src="assets/garden.svg" alt="Illustration de la photo du jardin d’Alice"><p class="caption">« Les fleurs du jardin sont enfin sorties ! Je t’embrasse. »</p>`
+        : `${statusIcon}<p class="assistant-words">${snapshot.recording==='recording'?'Je vous écoute.':lastAssistant}</p>${snapshot.recording!=='none'?tabletAudio(snapshot.recording):''}`;
       // The senior's words belong to the site's caption, not to the product UI.
       screen.innerHTML = `<div class="demo-topline">${tabletBrand}<span>Jeanne</span></div><div class="demo-scene-content ${photo ? 'with-photo' : ''}">${central}<div class="listening-place">${senior&&snapshot.recording!=='recording' ? `<span class="listening-mic">${icon('mic')}</span>` : ''}</div></div>`;
     }

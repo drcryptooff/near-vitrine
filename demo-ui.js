@@ -1,5 +1,5 @@
 import { DemoPlayer } from './demo-player.js';
-import { scenarios, seniorLines, demoPresentation, demoAudioState, aliceTypingAt } from './demo-script.js';
+import { scenarios, seniorLines, demoPresentation, demoAudioState, aliceTypingAt } from './demo-script.js?v=20261024-ending-1';
 import { DemoMedia } from './demo-media.js';
 import { captionMapping, captionWordAt } from './demo-captions.js';
 import { recordedTimings } from './demo-word-timings-flow.js';

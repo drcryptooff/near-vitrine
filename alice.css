@@ -23,6 +23,7 @@
 .near-logo{display:inline-block;width:34px;height:25px;object-fit:contain;flex-shrink:0}
 .tablet-brand .near-logo{width:25px;height:20px}
 .project-mark .near-logo{width:85px;height:65px;margin-bottom:13px}
+.world-foot svg{width:17px;height:17px;vertical-align:-4px;margin-right:5px}
 .demo-topline .tablet-brand .brand-face{width:22px;height:21px;gap:6px;padding-top:1px;transform:none;margin:0}
 .demo-topline .tablet-brand .brand-face i{width:6px;height:6px}
 .demo-topline .tablet-brand .brand-face:after{left:2px;bottom:1px;width:17px;height:9px;border-width:2px;border-top:0}

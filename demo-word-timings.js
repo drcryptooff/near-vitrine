@@ -296,69 +296,69 @@ export const recordedTimings = {
     ]
   },
   "sent": {
-    "text": "Votre message a été envoyé à Alice. Passez une belle journée Jeanne.",
-    "hash": "1c45e589b0d3a0abadf6ed3a5e452a59fdac2466235a319b70c7d8577c0f5958",
-    "duration": 5.110000133514404,
+    "text": "Votre message a été envoyé à Alice. Passez une bonne journée Jeanne !",
+    "hash": "6685305c83de020426a875bae35fbdeee063db4a8fdf0f1f3072f19ec495a332",
+    "duration": 4.409999847412109,
     "words": [
       {
         "word": "Votre",
         "at": 0,
-        "until": 460
+        "until": 400
       },
       {
         "word": "message",
-        "at": 460,
-        "until": 1000
+        "at": 400,
+        "until": 840
       },
       {
         "word": "a",
-        "at": 1000,
-        "until": 1380
+        "at": 840,
+        "until": 1060
       },
       {
         "word": "été",
-        "at": 1380,
-        "until": 1480
+        "at": 1060,
+        "until": 1180
       },
       {
         "word": "envoyé",
-        "at": 1480,
-        "until": 2000
+        "at": 1180,
+        "until": 1660
       },
       {
         "word": "à",
-        "at": 2000,
-        "until": 2220
+        "at": 1660,
+        "until": 1860
       },
       {
         "word": "Alice",
-        "at": 2220,
-        "until": 2730
+        "at": 1860,
+        "until": 2350
       },
       {
         "word": "Passez",
-        "at": 3580,
-        "until": 3740
+        "at": 3020,
+        "until": 3200
       },
       {
         "word": "une",
-        "at": 3740,
-        "until": 3880
+        "at": 3200,
+        "until": 3300
       },
       {
-        "word": "belle",
-        "at": 3880,
-        "until": 4180
+        "word": "bonne",
+        "at": 3300,
+        "until": 3580
       },
       {
         "word": "journée",
-        "at": 4180,
-        "until": 4510
+        "at": 3580,
+        "until": 3910
       },
       {
         "word": "Jeanne",
-        "at": 4740,
-        "until": 4810
+        "at": 4200,
+        "until": 4270
       }
     ]
   },

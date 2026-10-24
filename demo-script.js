@@ -5,9 +5,9 @@ export const lines = {
   offer: 'Voilà pour Alice. Voulez-vous lui répondre ?',
   record: 'Je vous écoute. Prenez votre temps, et arrêtez-vous quand vous avez fini.',
   confirm: 'Voulez-vous envoyer votre message à Alice ?',
-  sent: 'Votre message a été envoyé à Alice. Passez une belle journée Jeanne.'
+  sent: 'Votre message a été envoyé à Alice. Passez une bonne journée Jeanne !'
 };
-export const assistantFile = clip => ({welcome:'welcome-view-flow',sent:'sent-goodbye-flow'}[clip]||`${clip}-flow`);
+export const assistantFile = clip => ({welcome:'welcome-view-flow',sent:'sent-good-day-flow'}[clip]||`${clip}-flow`);
 const assistant = (clip, view, title, extra = {}) => ({ speaker: 'assistant', text: lines[clip], clip, file:assistantFile(clip), view, title, gap:120, ...extra });
 export const seniorLines = {
   see: 'Oui, j’aimerais le voir.',
@@ -16,7 +16,7 @@ export const seniorLines = {
   send: 'Oui, envoie-le à Alice.'
 };
 export const JEANNE_VOICE='shimmer';
-const senior = (id, view, title) => ({ speaker: 'senior', text: seniorLines[id], clip: `jeanne-${JEANNE_VOICE}-flow-${id}`, view, title, gap: 100 });
+const senior = (id, view, title, extra = {}) => ({ speaker: 'senior', text: seniorLines[id], clip: `jeanne-${JEANNE_VOICE}-flow-${id}`, view, title, gap: 100, ...extra });
 const transition = (clip, title) => ({speaker:'system',clip,view:'loading',title,text:'',gap:100});
 export const scenarios = {
   reply: {
@@ -27,16 +27,16 @@ export const scenarios = {
       { speaker: 'family', clip: 'family-compose-keys-apple', view: 'compose', title: 'Alice prépare un petit mot pour sa maman', text: 'Alice joint une photo et écrit son message.',gap:100 },
       { speaker: 'family', clip: 'family-send-pop', view: 'send', title: 'Sa photo arrive chez Jeanne', text: 'Alice envoie sa photo à Jeanne.', gap:120 },
       transition('tablet-wake','La mini-tablette s’éveille'),
-      assistant('welcome', 'greeting', 'Les nouvelles arrivent'),
-      senior('see', 'greeting', 'Jeanne souhaite voir le message'),
+      assistant('welcome', 'greeting', 'Les nouvelles arrivent', { gap:320 }),
+      senior('see', 'greeting', 'Jeanne souhaite voir le message', { gap:280 }),
       assistant('photo', 'photo', 'La photo d’Alice'),
-      assistant('offer', 'question', 'Une invitation à répondre'),
-      senior('reply', 'question', 'Jeanne répond à la voix'),
-      assistant('record', 'record', 'L’assistante lui laisse la parole'),
+      assistant('offer', 'question', 'Une invitation à répondre', { gap:320 }),
+      senior('reply', 'question', 'Jeanne répond à la voix', { gap:280 }),
+      assistant('record', 'record', 'L’assistante lui laisse la parole', { gap:320 }),
       senior('flowers', 'record', 'Jeanne enregistre son message'),
       transition('tablet-thinking','Near prépare la confirmation'),
-      assistant('confirm', 'question', 'La confirmation, à la voix'),
-      senior('send', 'question', 'Jeanne donne son accord'),
+      assistant('confirm', 'question', 'La confirmation, à la voix', { gap:320 }),
+      senior('send', 'question', 'Jeanne donne son accord', { gap:280 }),
       assistant('sent', 'sent', 'La mini-tablette termine son message', { gap:80 }),
       {speaker:'system',clip:'family-notification',view:'receipt',title:'Alice reçoit le vocal de Jeanne',text:'Un message vocal de Jeanne arrive sur le téléphone d’Alice.',delivered:true,gap:0},
       {speaker:'system',view:'transcript',title:'Les mots de Jeanne, à lire aussi',text:seniorLines.flowers,duration:650,delivered:true},

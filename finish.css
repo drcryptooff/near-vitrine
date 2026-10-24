@@ -1,0 +1,32 @@
+/* The end belongs to the whole film, above both devices and characters. */
+.demo-player{position:relative;isolation:isolate}
+.demo-player>.demo-stage,.demo-player>.demo-player-controls,.demo-player>.playback-status,.demo-player>.demo-bottom{transition:opacity .5s ease}
+.demo-player[data-complete=true]>.demo-stage,.demo-player[data-complete=true]>.demo-player-controls,.demo-player[data-complete=true]>.playback-status,.demo-player[data-complete=true]>.demo-bottom{opacity:0;pointer-events:none}
+.demo-finish{position:absolute;inset:0;z-index:50;display:flex;align-items:center;justify-content:center;padding:20px;opacity:0;visibility:hidden;pointer-events:none;transition:opacity .6s ease,visibility 0s .6s}
+.demo-finish-card{width:min(100%,590px);padding:46px 36px;text-align:center;display:flex;flex-direction:column;align-items:center;border:1px solid #d3ddcd;border-radius:28px;background:#f8f6f0;box-shadow:0 18px 55px #213e360b;transform:translateY(14px);transition:transform .7s cubic-bezier(.22,.8,.22,1)}
+.demo-player[data-complete=true]>.demo-finish{opacity:1;visibility:visible;pointer-events:auto;transition:opacity .65s .15s ease,visibility 0s}
+.demo-player[data-complete=true] .demo-finish-card{transform:none}
+.finish-brand{display:flex;align-items:center;gap:10px;font:500 32px/1 var(--sans);letter-spacing:-1.5px;margin-bottom:28px}
+.finish-brand .near-logo{width:36px;height:28px}
+.finish-mark{width:55px;height:55px;border-radius:50%;display:grid;place-items:center;background:#e6ecdf;color:var(--green);margin-bottom:20px}
+.finish-mark svg{width:26px;height:26px}
+.demo-finish h3{font:500 43px/1.12 var(--serif);letter-spacing:-1.4px;max-width:390px}
+.demo-finish p{font-size:14px;line-height:1.75;color:#657562;max-width:350px;margin-top:18px}
+.finish-actions{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-top:28px}
+.finish-actions .button{min-height:48px;gap:10px;padding:14px 20px;font-size:12px}
+.finish-actions svg{width:17px;height:17px}
+.finish-contact{background:transparent;color:var(--green);border-color:#c4d0bd}
+.finish-contact:hover{background:#e6ecdf;color:var(--green)}
+@media(max-width:600px){
+  .demo-finish{padding:0}
+  .demo-finish-card{padding:29px 22px;border-radius:23px}
+  .finish-brand{font-size:27px;margin-bottom:20px}
+  .finish-brand .near-logo{width:31px;height:24px}
+  .finish-mark{width:48px;height:48px;margin-bottom:17px}
+  .demo-finish h3{font-size:34px;letter-spacing:-1px;max-width:280px}
+  .demo-finish p{font-size:14px;line-height:1.65;margin-top:15px;max-width:275px}
+  .finish-actions{flex-direction:column;width:100%;gap:10px;margin-top:23px}
+  .finish-actions .button{width:100%;font-size:14px;min-height:48px}
+}
+@media(max-width:360px){.demo-finish-card{padding:24px 18px}.finish-brand{margin-bottom:16px}.finish-mark{width:43px;height:43px;margin-bottom:14px}.demo-finish h3{font-size:30px}.finish-actions{margin-top:20px}}
+@media(prefers-reduced-motion:reduce){.demo-finish,.demo-finish-card,.demo-player>.demo-stage,.demo-player>.demo-player-controls,.demo-player>.playback-status,.demo-player>.demo-bottom{transition:none}}

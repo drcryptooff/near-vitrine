@@ -41,8 +41,8 @@ export const scenarios = {
       {speaker:'system',clip:'family-notification',view:'receipt',title:'Alice reçoit le vocal de Jeanne',text:'Un message vocal de Jeanne arrive sur le téléphone d’Alice.',delivered:true,gap:0},
       {speaker:'system',view:'transcript',title:'Les mots de Jeanne, à lire aussi',text:seniorLines.flowers,duration:650,delivered:true},
       {speaker:'system',view:'transcript',title:'Alice découvre le message de Jeanne',text:seniorLines.flowers,duration:900,delivered:true,alice:'reading'},
-      {speaker:'system',view:'transcript',title:'Des nouvelles qui font sourire Alice',text:seniorLines.flowers,duration:2300,delivered:true,alice:'happy'},
-      {speaker:'system',view:'ending',title:'La conversation est terminée',text:'Alice a bien reçu le message de Jeanne.',duration:3500,delivered:true,alice:'happy'}
+      {speaker:'system',clip:'alice-happy-chime-v2',view:'transcript',title:'Des nouvelles qui font sourire Alice',text:seniorLines.flowers,gap:1500,delivered:true,alice:'happy'},
+      {speaker:'system',view:'ending',title:'La démo est terminée',text:'Alice a reçu le message vocal et sa transcription.',duration:0,delivered:true,alice:'happy'}
     ]
   }
 };
@@ -50,7 +50,7 @@ export const scenarios = {
 export function demoPresentation(steps,index,state) {
   const idle=state==='idle',step=steps[index];
   const delivered=!idle&&steps.slice(0,index+1).some(item=>item.delivered);
-  return {delivered,focus:delivered&&step.view!=='ending'||(!idle&&step.speaker==='family')?'family':'tablet',receipt:delivered?(step.view==='transcript'||step.view==='ending'?'transcript':'audio'):'none'};
+  return {delivered,focus:delivered||(!idle&&step.speaker==='family')?'family':'tablet',receipt:delivered?(step.view==='transcript'||step.view==='ending'?'transcript':'audio'):'none'};
 }
 
 export function demoAudioState(steps,index,state){

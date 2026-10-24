@@ -1,5 +1,5 @@
 import { DemoPlayer } from './demo-player.js';
-import { scenarios, seniorLines, demoPresentation, demoAudioState, aliceTypingAt } from './demo-script.js?v=20261024-ending-1';
+import { scenarios, seniorLines, demoPresentation, demoAudioState, aliceTypingAt } from './demo-script.js?v=20261024-finale-2';
 import { DemoMedia } from './demo-media.js';
 import { captionMapping, captionWordAt } from './demo-captions.js';
 import { recordedTimings } from './demo-word-timings-flow.js';
@@ -12,39 +12,15 @@ const voiceWave=()=>waveHeights.map(height=>`<i style="height:${height}px"></i>`
 const tabletAudio=state=>`<div class="tablet-audio ${state}" role="img" aria-label="${state==='recording'?'Votre message s’enregistre':'Votre message vocal, prêt à envoyer'}"><div class="tablet-audio-body"><span class="tablet-audio-icon" aria-hidden="true">${state==='recording'?icon('mic'):'♫'}</span><span class="tablet-audio-wave" aria-hidden="true">${[14,26,40,24,48,32,18].map((height,index)=>`<i style="height:${height*.55}px;--bar:${index}"></i>`).join('')}</span><span class="tablet-audio-time">${state==='recording'?'0:00':'0:05'}</span></div><small>${state==='recording'?'Votre message s’enregistre':'Votre message vocal'}</small></div>`;
 const screen = $('#tablet-screen');
 const audio = $('#demo-audio');
+const demo = $('#demo-player');
+const finish = $('#demo-finish');
+const sceneLayers = [...demo.children].filter(element => element !== finish);
 const scenario = 'reply';
 let lastRender = '';
 let lastAssistant = '';
-let lastAliceMood = '';
 let snapshot, caption, highlighted, frame;
 const tablet = $('.demo-tablet');
 let demoInView = false;
-let soundEffectsContext;
-
-function prepareSoundEffects() {
-  const AudioContextClass = window.AudioContext || window.webkitAudioContext;
-  if (!AudioContextClass) return;
-  soundEffectsContext ||= new AudioContextClass();
-  if (soundEffectsContext.state === 'suspended') soundEffectsContext.resume().catch(() => {});
-}
-
-function playAliceHappySound() {
-  if (audio.muted || !soundEffectsContext) return;
-  const now = soundEffectsContext.currentTime;
-  for (const [frequency, delay] of [[784, 0], [988, .075]]) {
-    const tone = soundEffectsContext.createOscillator();
-    const volume = soundEffectsContext.createGain();
-    tone.type = 'sine';
-    tone.frequency.value = frequency;
-    volume.gain.setValueAtTime(.0001, now + delay);
-    volume.gain.exponentialRampToValueAtTime(.055, now + delay + .025);
-    volume.gain.exponentialRampToValueAtTime(.0001, now + delay + .34);
-    tone.connect(volume);
-    volume.connect(soundEffectsContext.destination);
-    tone.start(now + delay);
-    tone.stop(now + delay + .36);
-  }
-}
 
 function updateCharactersVisibility() {
   const visible = demoInView && snapshot?.step.speaker === 'senior' && !['idle', 'ended'].includes(snapshot.state);
@@ -111,8 +87,11 @@ function draw({state, index, total, step, muted}) {
   const family = !idle && step.speaker === 'family';
   const presentation=demoPresentation(scenarios[scenario].steps,index,state);
   const {delivered,receipt}=presentation;
-  if (step.alice === 'happy' && lastAliceMood !== 'happy') playAliceHappySound();
-  lastAliceMood = step.alice || '';
+  const complete = !idle && (step.view === 'ending' || ended);
+  demo.dataset.complete = String(complete);
+  finish.inert = !complete;
+  finish.setAttribute('aria-hidden', String(!complete));
+  sceneLayers.forEach(element => { element.inert = complete; });
   const key = `${scenario}:${index}:${idle}`;
   $('#demo-player').dataset.state = state;
   $('#demo-player').dataset.speaker = idle ? 'none' : step.speaker;
@@ -138,8 +117,6 @@ function draw({state, index, total, step, muted}) {
       screen.innerHTML = `<div class="demo-home family-arrival"><span class="message-pill">${icon('mail')} ${step.view === 'send' ? '1 nouveau message' : 'Votre famille, tout près.'}</span><span class="touch-halo">${icon(step.view === 'send' ? 'mail' : 'heart')}</span><strong>${step.view === 'send' ? 'Des nouvelles<br>d’Alice ♡' : 'Bonjour<br>Jeanne'}</strong></div>`;
     } else if (step.speaker === 'system' && step.view === 'loading') {
       screen.innerHTML = `<div class="demo-topline">${tabletBrand}<span>Jeanne</span></div><div class="tablet-loading" role="status" aria-label="Near prépare la suite"><span class="loading-orb">${icon('heart')}</span><span class="loading-dots" aria-hidden="true"><i></i><i></i><i></i></span>${snapshot.recording==='ready'?tabletAudio('ready'):''}</div>`;
-    } else if (step.view === 'ending') {
-      screen.innerHTML = `<div class="demo-topline">${tabletBrand}<span>Jeanne</span></div><div class="demo-ending"><span class="demo-ending-mark">${icon('heart')}</span><span class="demo-ending-kicker">UN MOMENT PARTAGÉ</span><h3>La conversation est terminée.</h3><p>Alice a bien reçu le message de Jeanne.</p><span class="demo-ending-replay">${icon('reset')} Touchez la tablette pour revoir la démo</span></div>`;
     } else {
       if (step.speaker === 'assistant') lastAssistant = step.text;
       const photo = step.view === 'photo';
@@ -147,7 +124,7 @@ function draw({state, index, total, step, muted}) {
         ? `<div class="demo-person"><span class="avatar peach">A</span><strong>Alice</strong><small>${scenario === 'photo' ? 'La semaine dernière' : 'Aujourd’hui'}</small></div><img class="demo-photo" src="assets/garden.svg" alt="Illustration de la photo du jardin d’Alice"><p class="caption">« Les fleurs du jardin sont enfin sorties ! Je t’embrasse. »</p>`
         : snapshot.recording!=='none'
         ? `<p class="assistant-words">${snapshot.recording==='recording'?'Je vous écoute.':lastAssistant}</p>${tabletAudio(snapshot.recording)}`
-        : `<span class="demo-avatar ${['sent','receipt','transcript'].includes(step.view) ? 'complete' : ''}">${icon(['sent','receipt','transcript'].includes(step.view) ? 'check' : 'sound')}</span><p class="assistant-words">${lastAssistant}</p>`;
+        : `<span class="demo-avatar ${['sent','receipt','transcript','ending'].includes(step.view) ? 'complete' : ''}">${icon(['sent','receipt','transcript','ending'].includes(step.view) ? 'check' : 'sound')}</span><p class="assistant-words">${lastAssistant}</p>`;
       // The senior's words belong to the site's caption, not to the product UI.
       screen.innerHTML = `<div class="demo-topline">${tabletBrand}<span>Jeanne</span></div><div class="demo-scene-content ${photo ? 'with-photo' : ''}">${central}<div class="listening-place">${senior&&snapshot.recording!=='recording' ? `<span class="listening-mic">${icon('mic')}</span>` : ''}</div></div>`;
     }
@@ -200,7 +177,6 @@ if('ResizeObserver' in window) new ResizeObserver(()=> {
 }).observe($('.phone-chat'));
 export function pauseDemo() { player.pause(); }
 function startFromTablet() {
-  prepareSoundEffects();
   if (player.state !== 'playing') player.play();
 }
 tablet.addEventListener('click', startFromTablet);
@@ -215,7 +191,6 @@ $('.hero-tablet').addEventListener('click', event => {
   startFromTablet();
 });
 $('#demo-play').addEventListener('click', () => {
-  prepareSoundEffects();
   if (player.state === 'playing') player.pause();
   else {
     if (window.matchMedia('(max-width: 600px)').matches && (player.state === 'idle' || player.state === 'ended')) {
@@ -226,6 +201,10 @@ $('#demo-play').addEventListener('click', () => {
 });
 $('.sound-toggle').addEventListener('click', () => player.setMuted(!audio.muted));
 $('.reset-button').addEventListener('click', () => { player.load(scenarios[scenario].steps); });
+$('#demo-replay').addEventListener('click', () => {
+  player.load(scenarios[scenario].steps);
+  player.play();
+});
 player.load(scenarios[scenario].steps);
 if ('IntersectionObserver' in window) {
   new IntersectionObserver(entries => {

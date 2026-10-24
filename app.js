@@ -1,4 +1,4 @@
-import { pauseDemo } from './demo-ui.js?v=20261024-ending-1';
+import { pauseDemo } from './demo-ui.js?v=20261024-finale-2';
 const $ = selector => document.querySelector(selector);
 const $$ = selector => [...document.querySelectorAll(selector)];
 

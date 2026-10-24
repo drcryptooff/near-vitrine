@@ -6,7 +6,7 @@
   <meta name="description" content="Near, la technologie au service des seniors : une mini-tablette guidée par une IA vocale et une application pour la famille. Projet suisse.">
   <meta name="theme-color" content="#295e4b"><title>Near — La technologie au service des seniors.</title>
   <link rel="icon" href="assets/favicon.png"><link rel="preload" href="assets/fraunces.ttf" as="font" type="font/ttf" crossorigin><link rel="preload" href="assets/lexend.ttf" as="font" type="font/ttf" crossorigin>
-  <link rel="stylesheet" href="styles.css?v=20261024-ending-1"><link rel="stylesheet" href="demo.css"><link rel="stylesheet" href="jeanne.css"><link rel="stylesheet" href="devices.css"><link rel="stylesheet" href="phone.css"><link rel="stylesheet" href="alice.css"><link rel="stylesheet" href="swiss.css"><link rel="stylesheet" href="motion.css"><script src="app.js?v=20261024-ending-1" type="module"></script><script src="motion.js" type="module"></script>
+  <link rel="stylesheet" href="styles.css?v=20261024-finale-2"><link rel="stylesheet" href="demo.css"><link rel="stylesheet" href="jeanne.css"><link rel="stylesheet" href="devices.css"><link rel="stylesheet" href="phone.css"><link rel="stylesheet" href="alice.css"><link rel="stylesheet" href="swiss.css"><link rel="stylesheet" href="motion.css"><link rel="stylesheet" href="finish.css?v=20261024-finale-2"><script src="app.js?v=20261024-finale-2" type="module"></script><script src="motion.js" type="module"></script>
 </head>
 <body>
 <a class="skip" href="#main">Aller au contenu</a>
@@ -77,6 +77,15 @@
     </div>
   </div>
   <div class="demo-bottom"><div class="demo-progress" id="demo-progress" aria-label="Progression de la scène"></div></div>
+  <section id="demo-finish" class="demo-finish" aria-labelledby="demo-finish-title" aria-hidden="true" inert>
+    <div class="demo-finish-card">
+      <div class="finish-brand" aria-label="Near"><img class="near-logo" src="assets/near-logo.svg" alt="" aria-hidden="true"><span>Near.</span></div>
+      <span class="finish-mark" aria-hidden="true"><svg><use href="#i-heart"/></svg></span>
+      <h3 id="demo-finish-title">La démo est terminée.</h3>
+      <p>Alice a reçu le message vocal de Jeanne et sa transcription.</p>
+      <div class="finish-actions"><button id="demo-replay" class="button"><svg aria-hidden="true"><use href="#i-reset"/></svg>Revoir la démo</button><a class="button finish-contact" href="mailto:Marvinnussberger@gmail.com?subject=Parlons%20de%20Near">Contacter l’équipe <svg aria-hidden="true"><use href="#i-arrow"/></svg></a></div>
+    </div>
+  </section>
   </div><audio id="demo-audio" preload="none" aria-hidden="true"></audio>
   <p class="sr-only" id="demo-announcement" aria-live="polite"></p>
 </div></section>

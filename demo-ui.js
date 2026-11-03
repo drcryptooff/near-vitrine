@@ -6,6 +6,18 @@ import { recordedTimings } from './demo-word-timings-flow.js';
 
 const $ = selector => document.querySelector(selector);
 const icon = name => `<svg aria-hidden="true"><use href="#i-${name}"/></svg>`;
+const choicesByClip = {
+  welcome: [['Voir', 'play'], ['Non', 'close']],
+  see: [['Voir', 'play'], ['Non', 'close']],
+  photo: [['Suivante', 'arrow'], ['Relire', 'reset']],
+  offer: [['Répondre', 'mic'], ['Non', 'close']],
+  reply: [['Répondre', 'mic'], ['Non', 'close']],
+  confirm: [['Envoyer', 'arrow'], ['Non', 'close']],
+  send: [['Envoyer', 'arrow'], ['Non', 'close']]
+};
+const tabletChoices = choices => choices
+  ? `<div class="tablet-choices" role="group" aria-label="Choix affichés sur la tablette">${choices.map(([label, symbol]) => `<span>${icon(symbol)}${label}</span>`).join('')}</div>`
+  : '';
 const tabletBrand='<span class="tablet-brand" aria-label="Near"><img class="near-logo" src="assets/near-logo.svg" alt="" aria-hidden="true"><span>Near.</span></span>';
 const aliceAvatar='<span class="alice-profile" aria-hidden="true"><img src="assets/alice-typing.png" alt="" decoding="async"></span>';
 const waveHeights=[7,12,5,16,21,12,8,17,24,14,7,11,20,15,9,23,18,7,13,20,10,15,8,5];
@@ -113,7 +125,7 @@ function draw({state, index, total, step, muted}) {
     lastRender = key;
     if (idle) {
       lastAssistant = '';
-      screen.innerHTML = `<div class="demo-home"><span class="message-pill">${icon('heart')} Un moment en famille</span><span class="touch-halo">${icon('hand')}</span><strong>Touchez pour<br>démarrer</strong></div>`;
+      screen.innerHTML = `<div class="demo-home"><span class="message-pill">${icon('heart')} Aucun nouveau message</span><span class="touch-halo">${icon('hand')}</span><strong>Appuyez pour<br>démarrer</strong></div>`;
     } else if (family) {
       screen.innerHTML = `<div class="demo-home family-arrival"><span class="message-pill">${icon('mail')} ${step.view === 'send' ? '1 nouveau message' : 'Votre famille, tout près.'}</span><span class="touch-halo">${icon(step.view === 'send' ? 'mail' : 'heart')}</span><strong>${step.view === 'send' ? 'Des nouvelles<br>d’Alice ♡' : 'Bonjour<br>Jeanne'}</strong></div>`;
     } else if (step.speaker === 'system' && step.view === 'loading') {
@@ -126,8 +138,10 @@ function draw({state, index, total, step, muted}) {
       const central = photo
         ? `<div class="demo-person">${aliceAvatar}<strong>Alice</strong></div><img class="demo-photo" src="assets/garden.svg" alt="Illustration de la photo du jardin d’Alice"><p class="caption">« Les fleurs du jardin sont enfin sorties ! Je t’embrasse. »</p>`
         : `${statusIcon}<p class="assistant-words">${snapshot.recording==='recording'?'Je vous écoute.':lastAssistant}</p>${snapshot.recording!=='none'?tabletAudio(snapshot.recording):''}`;
+      const choiceKey = step.speaker === 'senior' ? step.clip.split('-').at(-1) : step.clip;
+      const choices = tabletChoices(choicesByClip[choiceKey]);
       // The senior's words belong to the site's caption, not to the product UI.
-      screen.innerHTML = `<div class="demo-topline">${tabletBrand}<span>Jeanne</span></div><div class="demo-scene-content ${photo ? 'with-photo' : ''}">${central}<div class="listening-place">${senior&&snapshot.recording!=='recording' ? `<span class="listening-mic">${icon('mic')}</span>` : ''}</div></div>`;
+      screen.innerHTML = `<div class="demo-topline">${tabletBrand}<span>Jeanne</span></div><div class="demo-scene-content ${photo ? 'with-photo' : ''}">${central}${choices}<div class="listening-place">${senior&&snapshot.recording!=='recording' ? `<span class="listening-mic">${icon('mic')}</span>` : ''}</div></div>`;
     }
     prepareCaption(!idle && step.speaker==='assistant' ? step.text : '');
     $('#alice-composer').innerHTML = family && step.view === 'compose'

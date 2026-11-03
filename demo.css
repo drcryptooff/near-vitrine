@@ -216,3 +216,40 @@
 @media(prefers-reduced-motion:reduce){
   .touch-halo:before,.listening-mic:before,.listening-mic:after,.listening-mic svg{animation:none}
 }
+
+/* Show the tablet's touch alternatives during the prerecorded voice exchange. */
+.tablet-choices {
+  display: grid;
+  gap: 8px;
+  width: 100%;
+}
+.tablet-choices > span {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 34px;
+  border-radius: 8px;
+  background: #1e6b4f;
+  color: white;
+  font-size: clamp(13px, 2vw, 18px);
+  font-weight: 500;
+}
+.tablet-choices > span + span {
+  background: #f4c542;
+  color: #332a14;
+}
+.tablet-choices svg {
+  width: 18px;
+  height: 18px;
+}
+.demo-scene-content:has(.tablet-choices) {
+  gap: 7px;
+}
+.demo-scene-content.with-photo:has(.tablet-choices) .demo-photo {
+  min-height: 55px;
+  flex-shrink: 1;
+}
+.demo-scene-content:has(.tablet-choices) .listening-place:empty {
+  display: none;
+}

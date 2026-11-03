@@ -220,7 +220,8 @@
 /* Show the tablet's touch alternatives during the prerecorded voice exchange. */
 .tablet-choices {
   display: grid;
-  gap: 8px;
+  flex-shrink: 0;
+  gap: 10px;
   width: 100%;
 }
 .tablet-choices > span {
@@ -228,11 +229,11 @@
   align-items: center;
   justify-content: center;
   gap: 8px;
-  min-height: 34px;
+  min-height: clamp(50px, 8vw, 68px);
   border-radius: 8px;
   background: #1e6b4f;
   color: white;
-  font-size: clamp(13px, 2vw, 18px);
+  font-size: clamp(18px, 3vw, 26px);
   font-weight: 500;
 }
 .tablet-choices > span + span {
@@ -240,11 +241,16 @@
   color: #332a14;
 }
 .tablet-choices svg {
-  width: 18px;
-  height: 18px;
+  width: 24px;
+  height: 24px;
 }
 .demo-scene-content:has(.tablet-choices) {
-  gap: 7px;
+  gap: 5px;
+}
+.demo-scene-content:has(.tablet-choices) .demo-avatar {
+  margin-bottom: 0;
+  width: 34px;
+  height: 34px;
 }
 .demo-scene-content.with-photo:has(.tablet-choices) .demo-photo {
   min-height: 55px;

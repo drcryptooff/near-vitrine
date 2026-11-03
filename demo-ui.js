@@ -125,7 +125,7 @@ function draw({state, index, total, step, muted}) {
     lastRender = key;
     if (idle) {
       lastAssistant = '';
-      screen.innerHTML = `<div class="demo-home"><span class="message-pill">${icon('heart')} Aucun nouveau message</span><span class="touch-halo">${icon('hand')}</span><strong>Appuyez pour<br>démarrer</strong></div>`;
+      screen.innerHTML = `<img class="demo-home-preview" src="assets/near-accueil.png" alt="Maquette du nouvel accueil Near avec Messages, Musique et Journal">`;
     } else if (family) {
       screen.innerHTML = `<div class="demo-home family-arrival"><span class="message-pill">${icon('mail')} ${step.view === 'send' ? '1 nouveau message' : 'Votre famille, tout près.'}</span><span class="touch-halo">${icon(step.view === 'send' ? 'mail' : 'heart')}</span><strong>${step.view === 'send' ? 'Des nouvelles<br>d’Alice ♡' : 'Bonjour<br>Jeanne'}</strong></div>`;
     } else if (step.speaker === 'system' && step.view === 'loading') {

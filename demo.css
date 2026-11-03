@@ -259,3 +259,16 @@
 .demo-scene-content:has(.tablet-choices) .listening-place:empty {
   display: none;
 }
+
+.hero-home-preview img,
+.demo-home-preview {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  border-radius: inherit;
+  background: #243d35;
+}
+.hero-home-preview img {
+  border-radius: 16px;
+}

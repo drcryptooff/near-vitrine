@@ -308,20 +308,59 @@
 .demo-player .demo-tablet {
   box-sizing: content-box;
   width: 280px;
-  height: auto;
+  height: 448px;
   aspect-ratio: 5 / 8;
   padding: 16px 10px 12px;
 }
 .hero .hero-home-preview {
   width: 250px;
+  height: 400px;
 }
 @media (max-width: 600px) {
   .demo-player .demo-tablet {
     width: 204px;
+    height: 326.4px;
     padding: 14px 9px 10px;
   }
   .hero .hero-home-preview {
     width: 180px;
+    height: 288px;
     padding: 14px 9px 10px;
+  }
+}
+
+/* Keep the frame stable while each scene changes its content. */
+.demo-player .tablet-screen {
+  min-width: 0;
+  min-height: 0;
+  overflow: hidden;
+}
+.demo-topline {
+  flex-shrink: 0;
+}
+.demo-scene-content {
+  min-width: 0;
+  overflow: hidden;
+}
+.demo-scene-content .assistant-words {
+  min-height: 0;
+  flex-shrink: 1;
+  overflow: auto;
+}
+.demo-scene-content:has(.tablet-choices) .listening-place {
+  margin-top: 4px;
+  height: 28px;
+}
+@media (max-width: 600px) {
+  .demo-scene-content:has(.tablet-choices) {
+    padding: 8px;
+  }
+  .demo-scene-content:has(.tablet-choices) .assistant-words {
+    font-size: 19px;
+    line-height: 1.25;
+  }
+  .demo-scene-content:has(.tablet-choices) .tablet-audio {
+    margin-top: 6px;
+    padding: 7px;
   }
 }

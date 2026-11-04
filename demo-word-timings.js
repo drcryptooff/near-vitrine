@@ -646,5 +646,160 @@ export const recordedTimings = {
         "until": 6410
       }
     ]
+  },
+  "hello": {
+    "text": "Bonjour Jeanne. Vous avez un nouveau message d’Alice.",
+    "hash": "9f1c335f52231582e8f19a3128e298b9807b13b6b1dd995023ed88d6b16a22cd",
+    "duration": 4.199999809265137,
+    "words": [
+      {
+        "word": "Bonjour",
+        "at": 0,
+        "until": 860
+      },
+      {
+        "word": "Jeanne",
+        "at": 860,
+        "until": 1310
+      },
+      {
+        "word": "Vous",
+        "at": 2120,
+        "until": 2200
+      },
+      {
+        "word": "avez",
+        "at": 2200,
+        "until": 2400
+      },
+      {
+        "word": "un",
+        "at": 2400,
+        "until": 2560
+      },
+      {
+        "word": "nouveau",
+        "at": 2560,
+        "until": 2820
+      },
+      {
+        "word": "message",
+        "at": 2820,
+        "until": 3240
+      },
+      {
+        "word": "d’Alice",
+        "at": 3240,
+        "until": 3830
+      }
+    ]
+  },
+  "answer": {
+    "text": "Répondre à Alice ?",
+    "hash": "1b850a7323561c20bd8cb5a10fbb7b9d867223ffbcbf73ed233c69a675ed75e5",
+    "duration": 2.009999990463257,
+    "words": [
+      {
+        "word": "Répondre",
+        "at": 0,
+        "until": 980
+      },
+      {
+        "word": "à",
+        "at": 980,
+        "until": 1100
+      },
+      {
+        "word": "Alice",
+        "at": 1100,
+        "until": 1650
+      }
+    ]
+  },
+  "speak": {
+    "text": "Message pour Alice. Vous pouvez parler.",
+    "hash": "1ed58aab5f0372d76af3c4546d80558029403cbea7bd4f8f73c55a9d924a3e91",
+    "duration": 3.309999942779541,
+    "words": [
+      {
+        "word": "Message",
+        "at": 0,
+        "until": 720
+      },
+      {
+        "word": "pour",
+        "at": 720,
+        "until": 1020
+      },
+      {
+        "word": "Alice",
+        "at": 1020,
+        "until": 1530
+      },
+      {
+        "word": "Vous",
+        "at": 2180,
+        "until": 2280
+      },
+      {
+        "word": "pouvez",
+        "at": 2280,
+        "until": 2680
+      },
+      {
+        "word": "parler",
+        "at": 2680,
+        "until": 3150
+      }
+    ]
+  },
+  "check": {
+    "text": "Envoyer à Alice ?",
+    "hash": "3caa56b83adbece14cc1b6c4b9fbe5ba02941db4450b0e32b799bddf5fb51487",
+    "duration": 2.299999952316284,
+    "words": [
+      {
+        "word": "Envoyer",
+        "at": 0,
+        "until": 800
+      },
+      {
+        "word": "à",
+        "at": 800,
+        "until": 1040
+      },
+      {
+        "word": "Alice",
+        "at": 1040,
+        "until": 1590
+      }
+    ]
+  },
+  "done": {
+    "text": "Message envoyé à Alice.",
+    "hash": "245d682633372a6059b914bbb637914fbcde3977559f50c5188d9a2728261ce6",
+    "duration": 2.299999952316284,
+    "words": [
+      {
+        "word": "Message",
+        "at": 0,
+        "until": 700
+      },
+      {
+        "word": "envoyé",
+        "at": 700,
+        "until": 1260
+      },
+      {
+        "word": "à",
+        "at": 1260,
+        "until": 1480
+      },
+      {
+        "word": "Alice",
+        "at": 1480,
+        "until": 1910
+      }
+    ]
   }
 };

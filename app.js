@@ -1,4 +1,4 @@
-import { pauseDemo } from './demo-ui.js?v=20261104-alice-arrival';
+import { pauseDemo } from './demo-ui.js?v=20261104-two-buttons';
 const $ = selector => document.querySelector(selector);
 const $$ = selector => [...document.querySelectorAll(selector)];
 
@@ -23,7 +23,7 @@ document.addEventListener('keydown', event => { if (event.key === 'Escape') { $(
 
 const dialogContent = {
   privacy: '<h2>Votre visite, simplement.</h2><p>Aucun traceur publicitaire, aucune mesure d’audience, aucun formulaire. Polices, images et voix sont fournies avec le site.</p><p>La démo est fictive : elle n’utilise pas votre micro, n’appelle aucun service d’IA et n’envoie aucun message.</p><p>Le bouton de contact ouvre votre messagerie ; votre e-mail n’est adressé qu’à Marvin (Marvinnussberger@gmail.com).</p>',
-  legal: '<h2>Near, un projet en développement.</h2><p>Ce site présente le projet Near ; aucune offre commerciale n’y est proposée. Prix, matériel et disponibilité seront précisés plus tard.</p><p>Jeanne et Alice sont fictives. La photo est générée par IA et le jardin est une illustration : ce ne sont pas des témoignages.</p><p>Contact : Marvin — Marvinnussberger@gmail.com.</p>'
+  legal: '<h2>Near, un projet en développement.</h2><p>Ce site présente le projet Near ; aucune offre commerciale n’y est proposée. Le tarif indiqué est envisagé : il sera confirmé lors des essais, comme le matériel et la disponibilité.</p><p>Jeanne et Alice sont fictives. La photo est générée par IA et le jardin est une illustration : ce ne sont pas des témoignages.</p><p>Contact : Marvin — Marvinnussberger@gmail.com.</p>'
 };
 $$('[data-dialog]').forEach(button => button.addEventListener('click', () => { pauseDemo(); $('#dialog-content').innerHTML = dialogContent[button.dataset.dialog]; $('#info-dialog').showModal(); }));
 $('.dialog-close').addEventListener('click', () => $('#info-dialog').close());

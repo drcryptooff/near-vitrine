@@ -1,0 +1,80 @@
+/* The mini-tablet shows the real application: sizes follow the screen (container units), colours those of apps/tablet. */
+.tablet-screen,.hero-screen.na-host{position:relative;container-type:size;overflow:hidden}
+.na{--na-green:#1e6b4f;--na-violet:#6a3d9a;--na-blue:#1f5a96;--na-night:#0f2a21;--na-ink:#0f2a21;--na-paper:#f8f6f0;--na-gold:#f2b630;--na-yellow:#f4c542;--na-amber:#a97f00;--na-red:#a23d31;
+  position:absolute;inset:0;display:flex;flex-direction:column;background:var(--na-paper);color:var(--na-ink);font-family:var(--sans);text-align:center;overflow:hidden}
+.na svg{width:1em;height:1em;stroke-width:2}
+
+/* Home: dark band, then three large white buttons with a coloured border and icon. */
+.na-band{flex:0 0 20cqh;display:flex;align-items:center;justify-content:space-between;gap:3cqw;padding:0 5cqw;background:var(--na-night);color:#fff;text-align:left}
+.na-clock{display:flex;flex-direction:column;min-width:0}
+.na-clock b{font-weight:700;font-size:10.5cqh;line-height:1.05;font-variant-numeric:tabular-nums;letter-spacing:-.04em}
+.na-clock span{font-weight:700;font-size:min(4.4cqh,6.6cqw);line-height:1.25;white-space:nowrap}
+.na-sky{display:flex;align-items:center;gap:1.5cqw;font-size:7.5cqh}.na-sky svg{color:var(--na-gold)}.na-sky b{font-weight:700}
+.na-tiles{flex:1;display:flex;flex-direction:column;gap:3cqh;padding:3.4cqh 4cqw}
+.na-row{flex:1;display:flex;gap:4cqw}
+.na-tile{position:relative;flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1.4cqh;min-width:0;border:max(3px,1.4cqw) solid;border-radius:5cqw;background:#fff}
+.na-messages{flex:1.5;border-color:var(--na-green)}.na-music{border-color:var(--na-violet);color:var(--na-violet)}.na-journal{border-color:var(--na-blue);color:var(--na-blue)}
+.na-tile>svg{font-size:13cqh}
+.na-word{display:flex;align-items:center;gap:1.6cqw;color:var(--na-ink);font-weight:700;font-size:min(5.6cqh,8.6cqw);line-height:1.15}
+.na-row .na-word{font-size:min(4.6cqh,7.4cqw)}
+.na-word svg{color:var(--na-green);font-size:1.25em}
+.na-picture{position:relative;display:grid;place-items:center;width:22cqh;height:22cqh}
+.na-picture-icon{font-size:20cqh;color:var(--na-green)}
+.na-face{display:block;flex-shrink:0;width:15cqh;height:15cqh;border-radius:50%;overflow:hidden;background:#f3dfca;border:max(2px,.7cqh) solid var(--na-green)}
+.na-face img{width:100%;height:100%;object-fit:cover;object-position:50% 18%}
+.na-face-big{width:22cqh;height:22cqh}.na-face-small{width:7cqh;height:7cqh;border-width:2px}
+.na-badge{position:absolute;right:-2cqh;top:-1.5cqh;display:grid;place-items:center;min-width:9cqh;height:9cqh;border-radius:5cqh;background:var(--na-gold);border:max(2px,.7cqh) solid #fff;font-weight:700;font-size:5.6cqh;color:var(--na-ink)}
+
+/* Holding Messages: the ring fills while the finger stays down, as on the tablet. */
+.na-ring{position:absolute;inset:-1.4cqw;border-radius:5.6cqw;pointer-events:none;background:conic-gradient(var(--na-green) var(--fill,0%),transparent 0);-webkit-mask:linear-gradient(#000 0 0) content-box exclude,linear-gradient(#000 0 0);mask:linear-gradient(#000 0 0) content-box exclude,linear-gradient(#000 0 0);padding:1.4cqw;animation:na-hold .6s linear forwards}
+@property --fill{syntax:'<percentage>';inherits:false;initial-value:0%}
+@keyframes na-hold{to{--fill:100%}}
+.na-holding{background:#eef5f0}
+
+/* Assistant: Quitter in the corner, what is said in the middle, two large answers at the bottom. */
+.na-assistant{padding:3cqh 4cqw 4cqh;gap:2.4cqh}
+.na-top{display:flex;align-items:center;justify-content:space-between;gap:2cqw;font-size:min(2.8cqh,4.2cqw)}
+.na-status{color:#3d4d45;text-align:left}
+.na-quit{display:flex;align-items:center;gap:1cqw;padding:.9cqh 2.6cqw;border:max(2px,.5cqh) solid var(--na-red);border-radius:5cqh;background:#fff;color:var(--na-red);font-weight:700;font-size:min(3cqh,4.6cqw)}
+.na-card{flex:1;min-height:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2cqh;padding:2.4cqh 4cqw;border-radius:4cqw;background:#fff;border:1px solid #e0e5db}
+.na-assistant .assistant-words{margin:0;font-family:var(--sans);font-weight:600;font-size:min(5.4cqh,8.2cqw);line-height:1.35;letter-spacing:-.01em;color:var(--na-ink)}
+.na-person{display:flex;flex-direction:column;align-items:center;gap:.8cqh}
+.na-person strong{font-family:var(--serif);font-weight:500;font-size:min(4.6cqh,7cqw)}
+.na-done{display:grid;place-items:center;width:16cqh;height:16cqh;border-radius:50%;background:var(--na-green);color:#fff;font-size:9cqh}
+.na-choices{display:flex;flex-direction:column;gap:2.6cqh}
+.na-choice{position:relative;display:flex;align-items:center;justify-content:center;gap:2.4cqw;height:11cqh;border-radius:3.4cqh;border:max(2px,.45cqh) solid;font-weight:700;font-size:min(5cqh,7.6cqw);transition:transform .15s,filter .15s}
+.na-choice svg{font-size:1.15em;stroke-width:2.4}
+.na-first{background:var(--na-green);border-color:var(--na-green);color:#fff}
+.na-second{background:var(--na-yellow);border-color:var(--na-amber);color:var(--na-ink)}
+.na-pressed{transform:scale(.97);filter:brightness(.86)}
+.na-finger{position:absolute;right:12%;top:52%;display:grid;place-items:center;width:9cqh;height:9cqh;border-radius:50%;background:#ffffffd9;color:var(--na-ink);font-size:6cqh;box-shadow:0 1cqh 2.4cqh #0f2a2133;animation:na-tap .45s ease-out both}
+.na-finger svg{stroke-width:1.8}
+@keyframes na-tap{from{transform:translate(30%,40%) scale(1.25);opacity:0}to{transform:none;opacity:1}}
+.na-messages .na-finger{right:5%;top:auto;bottom:5%}
+
+/* Recording and the message ready to send, like AudioReply. */
+.na-audio{display:flex;align-items:center;gap:2.4cqw;padding:1.6cqh 3cqw;border-radius:3cqh;background:#e7ecdf;color:var(--na-green)}
+.na-audio-dot{display:grid;place-items:center;width:7cqh;height:7cqh;border-radius:50%;background:currentColor;font-size:4cqh}.na-audio-dot svg{color:#fff}
+.na-audio-bars{display:flex;align-items:center;gap:.9cqw;height:7cqh}.na-audio-bars i{width:1.1cqw;min-width:3px;height:calc(var(--h) * .11cqh);border-radius:3px;background:currentColor}
+.na-audio-time{font-size:min(3cqh,4.6cqw);font-variant-numeric:tabular-nums}
+.na-recording{background:#f9e5de;color:#a94d3c}
+.demo-player[data-voicing=senior][data-recording=recording] .na-audio-bars i{animation:recording-wave .65s calc(var(--bar) * -.09s) ease-in-out infinite alternate}
+.demo-player[data-voicing=senior][data-recording=recording] .na-audio-dot{animation:recording-glow 1.3s ease-in-out infinite}
+.na-loading{background:transparent;border:0}
+
+/* The photo fills the screen; the original caption floats at the top, the two answers at the bottom. */
+.na-photo{background:#111;justify-content:space-between;padding:3cqh 4cqw 4cqh}
+.na-photo-image{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.na-photo-caption{position:relative;display:flex;align-items:center;gap:2cqw;padding:1.6cqh 3cqw;border-radius:3cqh;background:#ffffffeb;text-align:left}
+.na-person-inline{flex-direction:row;gap:1.4cqw}.na-person-inline strong{font-size:min(3.4cqh,5.2cqw)}
+.na-photo-caption .caption{margin:0;font-size:min(3.2cqh,4.8cqw);line-height:1.35;color:var(--na-ink)}
+.na-photo .na-choices{position:relative}
+
+/* Jeanne's finger is described in her bubble, not spoken. */
+.demo-caption[data-touch=true] #caption-words{font-style:italic;opacity:.85}
+
+.demo-player:not([data-state=playing]) .na-ring{animation-play-state:paused}
+@media(prefers-reduced-motion:reduce){.na *{animation:none!important;transition:none!important}.na-ring{--fill:100%}}
+
+/* « Bientôt » under the everyday features: what is planned, said once, plainly. */
+.quotidien-note{margin:30px 0 0;font-size:15px;line-height:1.6;color:var(--muted)}

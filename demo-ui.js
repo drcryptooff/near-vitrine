@@ -1,29 +1,14 @@
 import { DemoPlayer } from './demo-player.js';
-import { scenarios, seniorLines, demoPresentation, demoAudioState, aliceTypingAt } from './demo-script.js?v=20261024-finale-2';
+import { scenarios, seniorLines, tabletChoices, demoPresentation, demoAudioState, aliceTypingAt } from './demo-script.js?v=20261104-two-buttons';
+import { homeScreen, assistantScreen } from './tablet-app.js?v=20261104-two-buttons';
 import { DemoMedia } from './demo-media.js';
 import { captionMapping, captionWordAt } from './demo-captions.js';
 import { recordedTimings } from './demo-word-timings-flow.js';
 
 const $ = selector => document.querySelector(selector);
 const icon = name => `<svg aria-hidden="true"><use href="#i-${name}"/></svg>`;
-const choicesByClip = {
-  welcome: [['Voir', 'play'], ['Non', 'close']],
-  see: [['Voir', 'play'], ['Non', 'close']],
-  photo: [['Suivante', 'arrow'], ['Relire', 'reset']],
-  offer: [['Répondre', 'mic'], ['Non', 'close']],
-  reply: [['Répondre', 'mic'], ['Non', 'close']],
-  confirm: [['Envoyer', 'arrow'], ['Non', 'close']],
-  send: [['Envoyer', 'arrow'], ['Non', 'close']]
-};
-const tabletChoices = choices => choices
-  ? `<div class="tablet-choices" role="group" aria-label="Choix affichés sur la tablette">${choices.map(([label, symbol]) => `<span>${icon(symbol)}${label}</span>`).join('')}</div>`
-  : '';
-const tabletHome = (received = true) => `<div class="tablet-home-preview${received ? ' has-message' : ''}"><img class="demo-home-preview" src="assets/near-accueil.png" alt="Accueil Near avec Messages, Musique et Journal"><span class="home-alice alice-profile" role="img" aria-label="Photo de profil d’Alice"><img src="assets/alice-typing.png" alt=""></span><span class="home-message-count" aria-label="${received ? 'Un nouveau message d’Alice' : 'Aucun nouveau message'}">${received ? '1' : '0'}</span></div>`;
-const tabletBrand='<span class="tablet-brand" aria-label="Near"><img class="near-logo" src="assets/near-logo.svg" alt="" aria-hidden="true"><span>Near.</span></span>';
-const aliceAvatar='<span class="alice-profile" aria-hidden="true"><img src="assets/alice-typing.png" alt="" decoding="async"></span>';
 const waveHeights=[7,12,5,16,21,12,8,17,24,14,7,11,20,15,9,23,18,7,13,20,10,15,8,5];
 const voiceWave=()=>waveHeights.map(height=>`<i style="height:${height}px"></i>`).join('');
-const tabletAudio=state=>`<div class="tablet-audio ${state}" role="img" aria-label="${state==='recording'?'Votre message s’enregistre':'Votre message vocal, prêt à envoyer'}"><div class="tablet-audio-body"><span class="tablet-audio-icon" aria-hidden="true">${state==='recording'?icon('mic'):'♫'}</span><span class="tablet-audio-wave" aria-hidden="true">${[14,26,40,24,48,32,18].map((height,index)=>`<i style="height:${height*.55}px;--bar:${index}"></i>`).join('')}</span><span class="tablet-audio-time">${state==='recording'?'0:00':'0:05'}</span></div><small>${state==='recording'?'Votre message s’enregistre':'Votre message vocal'}</small></div>`;
 const screen = $('#tablet-screen');
 const audio = $('#demo-audio');
 const demo = $('#demo-player');
@@ -32,6 +17,7 @@ const sceneLayers = [...demo.children].filter(element => element !== finish);
 const scenario = 'reply';
 let lastRender = '';
 let lastAssistant = '';
+let lastPerson = false;
 let snapshot, caption, highlighted, frame;
 const tablet = $('.demo-tablet');
 let demoInView = false;
@@ -73,7 +59,8 @@ function prepareCaption(spokenText) {
 
 function animateCaption() {
   const voicing = snapshot.state === 'playing' && !audio.paused && !audio.ended;
-  const nextVoicing = voicing ? snapshot.step.speaker : 'none';
+  // A tap of Jeanne's finger is not her voice: her mouth stays still.
+  const nextVoicing = voicing ? snapshot.step.touch ? 'touch' : snapshot.step.speaker : 'none';
   if ($('#demo-player').dataset.voicing !== nextVoicing) $('#demo-player').dataset.voicing = nextVoicing;
   const composing=snapshot.step.speaker==='family'&&snapshot.step.view==='compose'&&snapshot.state!=='idle';
   const typed=composing?aliceTypingAt(audio.currentTime):{text:'',active:false};
@@ -125,24 +112,21 @@ function draw({state, index, total, step, muted}) {
   if (key !== lastRender) {
     lastRender = key;
     if (idle) {
-      lastAssistant = '';
-      screen.innerHTML = tabletHome(false);
+      lastAssistant = ''; lastPerson = false;
+      screen.innerHTML = homeScreen({ received: false });
     } else if (family) {
-      screen.innerHTML = tabletHome(step.view === 'send');
+      screen.innerHTML = homeScreen({ received: step.view === 'send' });
+    } else if (step.view === 'home') {
+      // Jeanne keeps her finger on Messages while the ring fills.
+      screen.innerHTML = homeScreen({ received: true, holding: true });
     } else if (step.speaker === 'system' && step.view === 'loading') {
-      screen.innerHTML = `<div class="demo-topline">${tabletBrand}<span>Jeanne</span></div><div class="tablet-loading" role="status" aria-label="Near prépare la suite"><span class="loading-orb">${icon('heart')}</span><span class="loading-dots" aria-hidden="true"><i></i><i></i><i></i></span>${snapshot.recording==='ready'?tabletAudio('ready'):''}</div>`;
+      screen.innerHTML = assistantScreen({ view: 'loading', audio: snapshot.recording });
     } else {
-      if (step.speaker === 'assistant') lastAssistant = step.text;
-      const photo = step.view === 'photo';
-      const completeMessage = ['sent','receipt','transcript','ending'].includes(step.view);
-      const statusIcon = snapshot.recording !== 'none' ? '' : `<span class="demo-avatar ${completeMessage ? 'complete' : ''}">${icon(completeMessage ? 'check' : 'sound')}</span>`;
-      const central = photo
-        ? `<div class="demo-person">${aliceAvatar}<strong>Alice</strong></div><img class="demo-photo" src="assets/garden.svg" alt="Illustration de la photo du jardin d’Alice"><p class="caption">« Les fleurs du jardin sont enfin sorties ! Je t’embrasse. »</p>`
-        : `${statusIcon}<p class="assistant-words">${snapshot.recording==='recording'?'Je vous écoute.':lastAssistant}</p>${snapshot.recording!=='none'?tabletAudio(snapshot.recording):''}`;
-      const choiceKey = step.speaker === 'senior' ? step.clip.split('-').at(-1) : step.clip;
-      const choices = tabletChoices(choicesByClip[choiceKey]);
+      if (step.speaker === 'assistant') { lastAssistant = step.text; lastPerson = !!step.person; }
+      const done = ['sent','receipt','transcript','ending'].includes(step.view);
       // The senior's words belong to the site's caption, not to the product UI.
-      screen.innerHTML = `<div class="demo-topline">${tabletBrand}<span>Jeanne</span></div><div class="demo-scene-content ${photo ? 'with-photo' : ''}">${central}${choices}<div class="listening-place">${senior&&snapshot.recording!=='recording' ? `<span class="listening-mic">${icon('mic')}</span>` : ''}</div></div>`;
+      screen.innerHTML = assistantScreen({ view: done ? 'sent' : step.view, words: lastAssistant, choices: step.choices ? tabletChoices[step.choices] : null,
+        touched: step.touch, withPerson: lastPerson, audio: snapshot.recording, status: senior && !step.touch ? 'Je vous écoute' : 'Votre assistante parle' });
     }
     prepareCaption(!idle && step.speaker==='assistant' ? step.text : '');
     $('#alice-composer').innerHTML = family && step.view === 'compose'
@@ -162,6 +146,7 @@ function draw({state, index, total, step, muted}) {
     // Keep her last bubble intact while the column glides out of view.
     if(idle||senior){
       $('#demo-caption').dataset.speaker=idle?'intro':'senior';
+      $('#demo-caption').dataset.touch=String(!idle&&!!step.touch);
       $('#caption-person').textContent=idle?'':'Jeanne';
       $('#caption-words').textContent=idle?'':step.text;
       $('#demo-player').dataset.jeanneText=!idle&&step.text.length>65?'long':'short';
@@ -185,6 +170,13 @@ function draw({state, index, total, step, muted}) {
   else animateCaption();
 }
 
+const hero = $('#hero-screen');
+// The homes show the visitor's time and date, like the tablet.
+function drawHomes() {
+  if (hero) hero.innerHTML = homeScreen({ received: true });
+  if (snapshot?.state === 'idle') { lastRender = ''; screen.innerHTML = homeScreen({ received: false }); }
+}
+setInterval(drawHomes, 30000);
 const media = new DemoMedia();
 const player = new DemoPlayer({ audio, onChange: draw,resolveClip:clip=>media.url(clip),preload:clips=>media.preload(clips) });
 window.addEventListener('pagehide',event=>{if(!event.persisted)media.dispose();});
@@ -222,6 +214,7 @@ $('#demo-replay').addEventListener('click', () => {
   player.play();
 });
 player.load(scenarios[scenario].steps);
+drawHomes();
 if ('IntersectionObserver' in window) {
   new IntersectionObserver(entries => {
     demoInView = entries[0].isIntersecting;

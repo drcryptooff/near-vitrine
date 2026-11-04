@@ -18,6 +18,7 @@ const choicesByClip = {
 const tabletChoices = choices => choices
   ? `<div class="tablet-choices" role="group" aria-label="Choix affichés sur la tablette">${choices.map(([label, symbol]) => `<span>${icon(symbol)}${label}</span>`).join('')}</div>`
   : '';
+const tabletHome = (received = true) => `<div class="tablet-home-preview${received ? ' has-message' : ''}"><img class="demo-home-preview" src="assets/near-accueil.png" alt="Accueil Near avec Messages, Musique et Journal"><span class="home-alice alice-profile" role="img" aria-label="Photo de profil d’Alice"><img src="assets/alice-typing.png" alt=""></span><span class="home-message-count" aria-label="${received ? 'Un nouveau message d’Alice' : 'Aucun nouveau message'}">${received ? '1' : '0'}</span></div>`;
 const tabletBrand='<span class="tablet-brand" aria-label="Near"><img class="near-logo" src="assets/near-logo.svg" alt="" aria-hidden="true"><span>Near.</span></span>';
 const aliceAvatar='<span class="alice-profile" aria-hidden="true"><img src="assets/alice-typing.png" alt="" decoding="async"></span>';
 const waveHeights=[7,12,5,16,21,12,8,17,24,14,7,11,20,15,9,23,18,7,13,20,10,15,8,5];
@@ -125,9 +126,9 @@ function draw({state, index, total, step, muted}) {
     lastRender = key;
     if (idle) {
       lastAssistant = '';
-      screen.innerHTML = `<img class="demo-home-preview" src="assets/near-accueil.png" alt="Maquette du nouvel accueil Near avec Messages, Musique et Journal">`;
+      screen.innerHTML = tabletHome(false);
     } else if (family) {
-      screen.innerHTML = `<div class="demo-home family-arrival"><span class="message-pill">${icon('mail')} ${step.view === 'send' ? '1 nouveau message' : 'Votre famille, tout près.'}</span><span class="touch-halo">${icon(step.view === 'send' ? 'mail' : 'heart')}</span><strong>${step.view === 'send' ? 'Des nouvelles<br>d’Alice ♡' : 'Bonjour<br>Jeanne'}</strong></div>`;
+      screen.innerHTML = tabletHome(step.view === 'send');
     } else if (step.speaker === 'system' && step.view === 'loading') {
       screen.innerHTML = `<div class="demo-topline">${tabletBrand}<span>Jeanne</span></div><div class="tablet-loading" role="status" aria-label="Near prépare la suite"><span class="loading-orb">${icon('heart')}</span><span class="loading-dots" aria-hidden="true"><i></i><i></i><i></i></span>${snapshot.recording==='ready'?tabletAudio('ready'):''}</div>`;
     } else {

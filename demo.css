@@ -271,3 +271,34 @@
 .hero-home-preview img {
   border-radius: 16px;
 }
+
+.tablet-home-preview {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  border-radius: inherit;
+}
+.tablet-home-preview .home-alice {
+  position: absolute;
+  left: 35%;
+  top: 36.1%;
+  width: 30%;
+  height: 18.75%;
+  border: 2px solid #1e6b4f;
+}
+.home-message-count {
+  position: absolute;
+  left: 55.3%;
+  top: 34.8%;
+  width: 12.5%;
+  height: 7.8%;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  border: 2px solid white;
+  background: #f4c542;
+  color: #0f2a21;
+  font-size: clamp(14px, 2vw, 23px);
+  font-weight: 700;
+}

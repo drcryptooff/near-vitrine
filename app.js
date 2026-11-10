@@ -1,4 +1,4 @@
-import { pauseDemo } from './demo-ui.js?v=20261104-two-buttons';
+import { pauseDemo } from './demo-ui.js?v=20261110-voice';
 const $ = selector => document.querySelector(selector);
 const $$ = selector => [...document.querySelectorAll(selector)];
 

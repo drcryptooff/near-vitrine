@@ -1,6 +1,6 @@
 import { DemoPlayer } from './demo-player.js';
-import { scenarios, seniorLines, tabletChoices, demoPresentation, demoAudioState, aliceTypingAt } from './demo-script.js?v=20261104-two-buttons';
-import { homeScreen, assistantScreen } from './tablet-app.js?v=20261104-two-buttons';
+import { scenarios, seniorLines, tabletChoices, demoPresentation, demoAudioState, aliceTypingAt } from './demo-script.js?v=20261110-voice';
+import { homeScreen, assistantScreen } from './tablet-app.js?v=20261110-voice';
 import { DemoMedia } from './demo-media.js';
 import { captionMapping, captionWordAt } from './demo-captions.js';
 import { recordedTimings } from './demo-word-timings-flow.js';
@@ -59,16 +59,18 @@ function prepareCaption(spokenText) {
 
 function animateCaption() {
   const voicing = snapshot.state === 'playing' && !audio.paused && !audio.ended;
-  // A tap of Jeanne's finger is not her voice: her mouth stays still.
-  const nextVoicing = voicing ? snapshot.step.touch ? 'touch' : snapshot.step.speaker : 'none';
+  const nextVoicing = voicing ? snapshot.step.speaker : 'none';
   if ($('#demo-player').dataset.voicing !== nextVoicing) $('#demo-player').dataset.voicing = nextVoicing;
+  // As on the tablet, the two answers appear only once the assistant has finished her sentence.
+  const answers = snapshot.step.speaker === 'assistant' && !audio.ended && snapshot.state !== 'idle' ? 'wait' : 'shown';
+  if ($('#demo-player').dataset.answers !== answers) $('#demo-player').dataset.answers = answers;
   const composing=snapshot.step.speaker==='family'&&snapshot.step.view==='compose'&&snapshot.state!=='idle';
   const typed=composing?aliceTypingAt(audio.currentTime):{text:'',active:false};
   const draft=$('#alice-draft-text');
   if(draft&&draft.textContent!==typed.text)draft.textContent=typed.text;
   const typing=composing&&typed.text&&!typed.active?'done':composing&&typed.active&&voicing?'active':'none';
   if($('#demo-player').dataset.typing!==typing)$('#demo-player').dataset.typing=typing;
-  const timer=screen.querySelector('.tablet-audio.recording .tablet-audio-time');
+  const timer=screen.querySelector('.na-recording .na-audio-time');
   if(timer){const seconds=Math.floor(audio.currentTime||0);timer.textContent=`${Math.floor(seconds/60)}:${String(seconds%60).padStart(2,'0')}`;}
   const speaking = snapshot.step.speaker === 'assistant' && ['playing', 'paused'].includes(snapshot.state) && !audio.ended;
   const index = speaking && caption ? captionWordAt(caption.timings, audio.currentTime, audio.duration, caption.recorded) : -1;
@@ -117,8 +119,8 @@ function draw({state, index, total, step, muted}) {
     } else if (family) {
       screen.innerHTML = homeScreen({ received: step.view === 'send' });
     } else if (step.view === 'home') {
-      // Jeanne keeps her finger on Messages while the ring fills.
-      screen.innerHTML = homeScreen({ received: true, holding: true });
+      // The tablet wakes on the new message: no finger, the assistant reads it at once.
+      screen.innerHTML = homeScreen({ received: true, waking: true });
     } else if (step.speaker === 'system' && step.view === 'loading') {
       screen.innerHTML = assistantScreen({ view: 'loading', audio: snapshot.recording });
     } else {
@@ -126,7 +128,7 @@ function draw({state, index, total, step, muted}) {
       const done = ['sent','receipt','transcript','ending'].includes(step.view);
       // The senior's words belong to the site's caption, not to the product UI.
       screen.innerHTML = assistantScreen({ view: done ? 'sent' : step.view, words: lastAssistant, choices: step.choices ? tabletChoices[step.choices] : null,
-        touched: step.touch, withPerson: lastPerson, audio: snapshot.recording, status: senior && !step.touch ? 'Je vous écoute' : 'Votre assistante parle' });
+        withPerson: lastPerson, audio: snapshot.recording, status: senior ? 'Je vous écoute' : 'Votre assistante parle' });
     }
     prepareCaption(!idle && step.speaker==='assistant' ? step.text : '');
     $('#alice-composer').innerHTML = family && step.view === 'compose'
@@ -146,7 +148,6 @@ function draw({state, index, total, step, muted}) {
     // Keep her last bubble intact while the column glides out of view.
     if(idle||senior){
       $('#demo-caption').dataset.speaker=idle?'intro':'senior';
-      $('#demo-caption').dataset.touch=String(!idle&&!!step.touch);
       $('#caption-person').textContent=idle?'':'Jeanne';
       $('#caption-words').textContent=idle?'':step.text;
       $('#demo-player').dataset.jeanneText=!idle&&step.text.length>65?'long':'short';

@@ -11,10 +11,12 @@ export const lines = {
 export const assistantFile = clip => `${clip}-flow`;
 const assistant = (clip, view, title, extra = {}) => ({ speaker: 'assistant', text: lines[clip], clip, file:assistantFile(clip), view, title, gap:120, ...extra });
 export const seniorLines = {
+  ack: 'D’accord.',
+  reply: 'Oui, j’aimerais lui répondre.',
   flowers: 'Quelles jolies fleurs ! Tu as vraiment la main verte. Je t’embrasse aussi, ma chérie.',
   send: 'Oui, envoie-le à Alice.'
 };
-/** The two large answers the tablet shows under each question: the proposed action first (green), the other below (yellow). */
+/** The two large answers the tablet shows under each question: the proposed action (green, on the right), the other (yellow, on the left). Jeanne never touches them in the demo: she answers aloud. */
 export const tabletChoices = {
   photo: [['Suivante', 'arrow'], ['Relire', 'reset']],
   answer: [['Répondre', 'mic'], ['Non', 'close']],
@@ -23,8 +25,6 @@ export const tabletChoices = {
 };
 export const JEANNE_VOICE='shimmer';
 const senior = (id, view, title, extra = {}) => ({ speaker: 'senior', text: seniorLines[id], clip: `jeanne-${JEANNE_VOICE}-flow-${id}`, view, title, gap: 100, ...extra });
-/** Jeanne answers with her finger: a short tap on one of the two large buttons. */
-const touch = (label, view, choices, title, extra = {}) => ({ speaker: 'senior', touch: label, text: `Elle touche « ${label} »`, clip: 'tablet-tap', view, choices, title, gap: 260, ...extra });
 const transition = (clip, title) => ({speaker:'system',clip,view:'loading',title,text:'',gap:100});
 export const scenarios = {
   reply: {
@@ -34,15 +34,15 @@ export const scenarios = {
       // before the recorded conversation (including on mobile browsers).
       { speaker: 'family', clip: 'family-compose-keys-apple', view: 'compose', title: 'Alice prépare un petit mot pour sa maman', text: 'Alice joint une photo et écrit son message.',gap:100 },
       { speaker: 'family', clip: 'family-send-pop', view: 'send', title: 'Sa photo arrive chez Jeanne', text: 'Alice envoie sa photo à Jeanne.', gap:220 },
-      { speaker: 'senior', touch: 'Messages', hold: true, text: 'Elle garde le doigt sur « Messages »', clip: 'tablet-wake', view: 'home', title: 'Jeanne ouvre ses messages', gap: 260 },
+      // The message arrives: the tablet wakes and the assistant reads it at once. Jeanne touches nothing.
+      { speaker: 'system', clip: 'tablet-wake', view: 'home', title: 'Le message arrive chez Jeanne', text: '', gap: 260 },
       assistant('hello', 'greeting', 'L’assistante annonce le message', { gap:200, person:true }),
       assistant('photo', 'photo', 'La photo d’Alice', { choices:'photo' }),
-      touch('Suivante', 'photo', 'photo', 'Jeanne a fini de regarder'),
-      assistant('answer', 'question', 'Une question, deux grands boutons', { choices:'answer', person:true, gap:320 }),
-      touch('Répondre', 'question', 'answer', 'Jeanne choisit de répondre'),
+      senior('ack', 'photo', 'Jeanne passe à la suite à la voix', { choices:'photo', gap:200 }),
+      assistant('answer', 'question', 'Une question, et Jeanne répond à la voix', { choices:'answer', person:true, gap:200 }),
+      senior('reply', 'question', 'Jeanne choisit de répondre', { choices:'answer', gap:200 }),
       assistant('speak', 'record', 'L’assistante lui laisse la parole', { person:true, gap:200 }),
-      senior('flowers', 'record', 'Jeanne enregistre son message', { choices:'record' }),
-      touch('Fini', 'record', 'record', 'Jeanne a terminé'),
+      senior('flowers', 'record', 'Jeanne enregistre son message', { choices:'record', gap:500 }),
       transition('tablet-thinking','Near prépare la confirmation'),
       assistant('check', 'question', 'L’envoi attend son accord', { choices:'check', person:true, gap:320 }),
       senior('send', 'question', 'Jeanne donne son accord à la voix', { choices:'check', gap:280 }),
@@ -64,11 +64,9 @@ export function demoPresentation(steps,index,state) {
 
 export function demoAudioState(steps,index,state){
   if(state==='idle')return 'none';
-  const recorded=steps.findIndex(step=>step.speaker==='senior'&&step.view==='record'&&!step.touch);
+  const recorded=steps.findIndex(step=>step.speaker==='senior'&&step.view==='record');
   const sent=steps.findIndex(step=>step.view==='sent');
-  // Touching « Fini » still shows the recording that it ends.
-  const ending=steps[index]?.touch&&steps[index].view==='record';
-  return index===recorded||ending?'recording':recorded>=0&&index>recorded&&index<sent?'ready':'none';
+  return index===recorded?'recording':recorded>=0&&index>recorded&&index<sent?'ready':'none';
 }
 
 export const ALICE_MESSAGE='Les fleurs du jardin sont enfin sorties ! Je t’embrasse 🌷';

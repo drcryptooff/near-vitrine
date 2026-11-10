@@ -81,7 +81,7 @@ export class DemoPlayer {
       this.audio.removeEventListener('ended', ended); this.audio.removeEventListener('error', error); this.audio.removeEventListener('timeupdate', activity);
     };
     this.audio.src = this.resolveClip(step.file||step.clip);
-    if (step.speaker === 'senior') this.wait(100, 'audio');
+    if (step.speaker === 'senior') this.wait(step.lead ?? 100, 'audio');
     else this.playAudio(revision);
   }
 }

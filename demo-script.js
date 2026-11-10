@@ -9,9 +9,9 @@ export const lines = {
   done: 'Message envoyé à Alice.'
 };
 export const assistantFile = clip => `${clip}-flow`;
-const assistant = (clip, view, title, extra = {}) => ({ speaker: 'assistant', text: lines[clip], clip, file:assistantFile(clip), view, title, gap:120, ...extra });
+const assistant = (clip, view, title, extra = {}) => ({ speaker: 'assistant', text: lines[clip], clip, file:assistantFile(clip), view, title, cue:'sound', gap:800, ...extra });
 export const seniorLines = {
-  ack: 'D’accord.',
+  photo: 'Quelle jolie photo !',
   reply: 'Oui, j’aimerais lui répondre.',
   flowers: 'Quelles jolies fleurs ! Tu as vraiment la main verte. Je t’embrasse aussi, ma chérie.',
   send: 'Oui, envoie-le à Alice.'
@@ -24,29 +24,29 @@ export const tabletChoices = {
   check: [['Envoyer', 'send'], ['Non', 'close']]
 };
 export const JEANNE_VOICE='shimmer';
-const senior = (id, view, title, extra = {}) => ({ speaker: 'senior', text: seniorLines[id], clip: `jeanne-${JEANNE_VOICE}-flow-${id}`, view, title, gap: 100, ...extra });
-const transition = (clip, title) => ({speaker:'system',clip,view:'loading',title,text:'',gap:100});
+// Jeanne comes in from the side and is seen before she speaks (`lead`, in ms).
+const senior = (id, view, title, extra = {}) => ({ speaker: 'senior', text: seniorLines[id], clip: `jeanne-${JEANNE_VOICE}-flow-${id}`, view, title, lead: 900, gap: 1000, ...extra });
 export const scenarios = {
   reply: {
     label: 'Un message d’Alice', description: 'Alice partage une photo. Jeanne la regarde et lui répond.',
     steps: [
       // Media starts on the visitor’s gesture, unlocking the same audio owner
       // before the recorded conversation (including on mobile browsers).
-      { speaker: 'family', clip: 'family-compose-keys-apple', view: 'compose', title: 'Alice prépare un petit mot pour sa maman', text: 'Alice joint une photo et écrit son message.',gap:100 },
-      { speaker: 'family', clip: 'family-send-pop', view: 'send', title: 'Sa photo arrive chez Jeanne', text: 'Alice envoie sa photo à Jeanne.', gap:220 },
+      { speaker: 'family', clip: 'family-compose-keys-apple', view: 'compose', title: 'Alice prépare un petit mot pour sa maman', text: 'Alice joint une photo et écrit son message.', gap:600 },
+      { speaker: 'family', clip: 'family-send-pop', view: 'send', title: 'Sa photo arrive chez Jeanne', text: 'Alice envoie sa photo à Jeanne.', gap:900 },
       // The message arrives: the tablet wakes and the assistant reads it at once. Jeanne touches nothing.
-      { speaker: 'system', clip: 'tablet-wake', view: 'home', title: 'Le message arrive chez Jeanne', text: '', gap: 260 },
-      assistant('hello', 'greeting', 'L’assistante annonce le message', { gap:200, person:true }),
-      assistant('photo', 'photo', 'La photo d’Alice', { choices:'photo' }),
-      senior('ack', 'photo', 'Jeanne passe à la suite à la voix', { choices:'photo', gap:200 }),
-      assistant('answer', 'question', 'Une question, et Jeanne répond à la voix', { choices:'answer', person:true, gap:200 }),
-      senior('reply', 'question', 'Jeanne choisit de répondre', { choices:'answer', gap:200 }),
-      assistant('speak', 'record', 'L’assistante lui laisse la parole', { person:true, gap:200 }),
-      senior('flowers', 'record', 'Jeanne enregistre son message', { choices:'record', gap:500 }),
-      transition('tablet-thinking','Near prépare la confirmation'),
-      assistant('check', 'question', 'L’envoi attend son accord', { choices:'check', person:true, gap:320 }),
-      senior('send', 'question', 'Jeanne donne son accord à la voix', { choices:'check', gap:280 }),
-      assistant('done', 'sent', 'Le message est parti', { gap:80 }),
+      { speaker: 'system', clip: 'tablet-wake', view: 'home', title: 'Le message arrive chez Jeanne', text: '', gap:1000 },
+      assistant('hello', 'greeting', 'L’assistante annonce le message', { person:true, cue:'hand', gap:900 }),
+      // Time to look at the photo; then Jeanne comes in and says what she thinks of it.
+      assistant('photo', 'photo', 'La photo d’Alice', { choices:'photo', gap:1500 }),
+      senior('photo', 'photo', 'Jeanne découvre la photo', { choices:'photo', gap:1100 }),
+      assistant('answer', 'question', 'Une question, et Jeanne répond à la voix', { choices:'answer', person:true, gap:1300 }),
+      senior('reply', 'question', 'Jeanne choisit de répondre', { choices:'answer', gap:1000 }),
+      assistant('speak', 'record', 'L’assistante lui laisse la parole', { person:true, gap:700 }),
+      senior('flowers', 'record', 'Jeanne enregistre son message', { choices:'record', gap:1300 }),
+      assistant('check', 'question', 'L’envoi attend son accord', { choices:'check', person:true, gap:1300 }),
+      senior('send', 'question', 'Jeanne donne son accord à la voix', { choices:'check', gap:1000 }),
+      assistant('done', 'sent', 'Le message est parti', { cue:'send', gap:1200 }),
       {speaker:'system',clip:'family-notification',view:'receipt',title:'Alice reçoit le vocal de Jeanne',text:'Un message vocal de Jeanne arrive sur le téléphone d’Alice.',delivered:true,gap:0},
       {speaker:'system',view:'transcript',title:'Les mots de Jeanne, à lire aussi',text:seniorLines.flowers,duration:650,delivered:true},
       {speaker:'system',view:'transcript',title:'Alice découvre le message de Jeanne',text:seniorLines.flowers,duration:900,delivered:true,alice:'reading'},

@@ -1,6 +1,6 @@
 import { DemoPlayer } from './demo-player.js';
-import { scenarios, seniorLines, tabletChoices, demoPresentation, demoAudioState, aliceTypingAt } from './demo-script.js?v=20261110-voice';
-import { homeScreen, assistantScreen } from './tablet-app.js?v=20261110-voice';
+import { scenarios, seniorLines, tabletChoices, demoPresentation, demoAudioState, aliceTypingAt } from './demo-script.js?v=20261110-tablet';
+import { homeScreen, assistantScreen } from './tablet-app.js?v=20261110-tablet';
 import { DemoMedia } from './demo-media.js';
 import { captionMapping, captionWordAt } from './demo-captions.js';
 import { recordedTimings } from './demo-word-timings-flow.js';
@@ -18,6 +18,7 @@ const scenario = 'reply';
 let lastRender = '';
 let lastAssistant = '';
 let lastPerson = false;
+let lastCue = 'sound';
 let snapshot, caption, highlighted, frame;
 const tablet = $('.demo-tablet');
 let demoInView = false;
@@ -121,14 +122,12 @@ function draw({state, index, total, step, muted}) {
     } else if (step.view === 'home') {
       // The tablet wakes on the new message: no finger, the assistant reads it at once.
       screen.innerHTML = homeScreen({ received: true, waking: true });
-    } else if (step.speaker === 'system' && step.view === 'loading') {
-      screen.innerHTML = assistantScreen({ view: 'loading', audio: snapshot.recording });
     } else {
-      if (step.speaker === 'assistant') { lastAssistant = step.text; lastPerson = !!step.person; }
+      if (step.speaker === 'assistant') { lastAssistant = step.text; lastPerson = !!step.person; lastCue = step.cue || 'sound'; }
       const done = ['sent','receipt','transcript','ending'].includes(step.view);
       // The senior's words belong to the site's caption, not to the product UI.
       screen.innerHTML = assistantScreen({ view: done ? 'sent' : step.view, words: lastAssistant, choices: step.choices ? tabletChoices[step.choices] : null,
-        withPerson: lastPerson, audio: snapshot.recording, status: senior ? 'Je vous écoute' : 'Votre assistante parle' });
+        withPerson: lastPerson, cue: lastCue, audio: snapshot.recording, status: senior ? 'Je vous écoute' : 'Votre assistante parle' });
     }
     prepareCaption(!idle && step.speaker==='assistant' ? step.text : '');
     $('#alice-composer').innerHTML = family && step.view === 'compose'

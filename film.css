@@ -1,0 +1,48 @@
+/* The demo as one continuous film: chapters, a camera, what travels between the devices. */
+
+/* Chapters: five segments that fill while they play; a touch jumps to one. */
+.film-chapters{display:flex;gap:8px;width:min(760px,100%);margin:0 auto}
+.film-chapter{flex:1 1 0;min-width:0;min-height:44px;display:flex;flex-direction:column;gap:9px;padding:8px 0 0;border:0;background:none;color:#6c7d65;font:400 12px/1.3 var(--sans);text-align:left;cursor:pointer;transition:color .4s}
+.film-seg{display:block;height:4px;border-radius:4px;background:#d0d9c8;overflow:hidden;transition:background-color .9s}
+.film-seg i{display:block;height:100%;border-radius:4px;background:#1e6b4f;transform:scaleX(0);transform-origin:0 50%;transition:background-color .9s}
+.film-label{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.film-chapter:hover .film-seg{background:#bccbb3}
+.film-chapter[aria-current]{color:#213e36;font-weight:500}
+.film-now{display:none;min-height:18px;margin:2px 0 0;text-align:center;font:500 13px/1.4 var(--sans);color:#213e36;transition:color .9s}
+.film-chapter:focus-visible{outline:3px solid #b1763d;outline-offset:4px;border-radius:6px}
+@media(max-width:600px){
+  .film-chapters{gap:5px}
+  .film-chapter{font-size:12px;gap:7px}
+  /* On a phone only the chapter being played is named, on one line under the segments. */
+  .film-label{display:none}
+  .film-chapter{min-height:36px;padding-top:16px}
+  .film-now{display:block}
+  .demo-bottom{display:flex;flex-direction:column;align-items:stretch;gap:6px}
+}
+
+/* The photo, then the voice, cross from one device to the other. */
+.demo-flight{position:absolute;left:0;top:0;z-index:40;display:flex;align-items:center;justify-content:center;gap:6px;overflow:hidden;pointer-events:none;box-shadow:0 10px 26px #0f2a2140;will-change:transform}
+.demo-flight[hidden]{display:none}
+.demo-flight img{width:100%;height:100%;object-fit:cover}
+.demo-flight[data-kind=voice]{background:#1e6b4f;color:#fff}
+.demo-flight[data-kind=voice] svg{flex:0 0 auto;width:14px;height:14px;fill:none;stroke:currentColor;stroke-width:2}
+.demo-flight .voice-wave{display:flex;align-items:center;gap:2px;height:20px;min-width:0;overflow:hidden}
+.demo-flight .voice-wave i{flex:0 0 2px;border-radius:2px;background:currentColor;max-height:18px}
+
+/* One tablet screen fades into the next. */
+.na-leaving{z-index:3;pointer-events:none;animation:na-leave .38s ease both}
+@keyframes na-leave{to{opacity:0}}
+
+/* The camera, on a wide screen: it moves in on the device the scene is about, the other one steps back. */
+@media(min-width:901px) and (prefers-reduced-motion:no-preference){
+  .demo-tablet-column,.demo-phone-column{transition:transform 1s cubic-bezier(.3,0,.15,1),opacity 1s ease,filter 1s ease}
+  .demo-player[data-camera=tablet] .demo-tablet-column{transform:translateX(34px) scale(1.05)}
+  .demo-player[data-camera=tablet] .demo-phone-column{transform:translateX(22px) scale(.86);opacity:.5;filter:saturate(.6)}
+  .demo-phone-column{transform-origin:50% 30%}
+  .demo-player[data-camera=family] .demo-phone-column{z-index:4;transform:translateX(-64px) scale(1.12);transition:transform 1s cubic-bezier(.3,0,.15,1),opacity 1s ease,filter 1s ease}
+  .demo-player[data-camera=family] .demo-tablet-column{transform:translateX(-30px) scale(.9);opacity:.55;filter:saturate(.6)}
+  .demo-player:not([data-camera=wide]) .connection-line{opacity:0;transition:opacity .6s}
+}
+@media(prefers-reduced-motion:reduce){
+  .na-leaving{animation:none;display:none}
+}

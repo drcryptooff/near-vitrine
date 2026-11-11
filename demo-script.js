@@ -16,9 +16,9 @@ export const seniorLines = {
   flowers: 'Quelles jolies fleurs ! Tu as vraiment la main verte. Je t’embrasse aussi, ma chérie.',
   send: 'Oui, envoie-le à Alice.'
 };
-/** The two large answers the tablet shows under each question: the proposed action (green, on the right), the other (yellow, on the left). Jeanne never touches them in the demo: she answers aloud. */
+/** The large answers the tablet shows under each question (a photo has only « Suivante », Near 1.1.52): the proposed action (green, on the right), the other (yellow, on the left). Jeanne never touches them in the demo: she answers aloud. */
 export const tabletChoices = {
-  photo: [['Suivante', 'arrow'], ['Relire', 'reset']],
+  photo: [['Suivante', 'arrow']],
   answer: [['Répondre', 'mic'], ['Non', 'close']],
   record: [['Fini', 'check'], ['Recommencer', 'reset']],
   check: [['Envoyer', 'send'], ['Non', 'close']]

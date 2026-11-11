@@ -46,8 +46,16 @@
 
 /* A compact stage keeps both devices in view on a phone. */
 @media(max-width:900px) and (min-width:601px){
-  .demo-senior-column{margin-inline:auto}
-  .demo-player[data-jeanne=visible] .demo-senior-column{margin-top:22px}
+  /* Jeanne enters on the left of the tablet, at the height where Alice enters on the right: no row under the devices. */
+  .demo-senior-column{position:absolute;left:calc((100vw - 100%) / -2 + 15px);right:auto;top:auto;bottom:40px;width:150px;max-width:none;height:auto;max-height:none;min-height:0;flex-direction:column;gap:12px;align-items:center;margin:0;overflow:visible;z-index:35;transform:translateX(calc(-100% - 30px))}
+  .demo-player[data-jeanne=visible] .demo-senior-column{max-height:none;margin:0;overflow:visible;transform:none}
+  .demo-senior-column .jeanne-portrait{order:1;width:140px;height:140px}
+  .demo-senior-column .demo-caption{order:0;flex:0 0 auto;width:150px;min-height:0;margin:0;padding:12px 14px;border-radius:16px 16px 16px 4px;box-shadow:0 8px 24px #70563c0b}
+  .demo-senior-column .demo-caption>p{font-size:14px;line-height:1.5}
+  .demo-senior-column .demo-caption:after{top:auto;bottom:-6px;left:24px;width:14px;height:14px}
+  /* The tablet makes room, as the phone does for Alice; it stays in front while Jeanne speaks. */
+  .demo-player[data-jeanne=visible] .demo-tablet-column{position:relative;z-index:4;transform:translateX(max(40px,calc(430px - 50vw))) scale(.88);transition:transform .32s cubic-bezier(.22,.8,.22,1)}
+  .demo-player[data-jeanne=visible] .demo-phone-column{filter:brightness(.94)}
 }
 @media(max-width:600px){
   .demo-stage{display:block;order:0;position:relative;width:100%;max-width:360px;height:390px;min-height:0;isolation:isolate;margin:0 auto}

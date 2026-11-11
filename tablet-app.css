@@ -29,9 +29,8 @@
 .na-waking{animation:na-wake 1.2s ease-out both}
 @keyframes na-wake{0%{box-shadow:0 0 0 0 #1e6b4f00}35%{box-shadow:0 0 0 2.4cqw #1e6b4f33;background:#eef5f0}100%{box-shadow:0 0 0 0 #1e6b4f00}}
 
-/* Assistant (AssistantScreen): small status, white card with portrait and words, round cue, two answers, Quitter at the bottom. */
-.na-assistant{padding:1.6cqh 2.6cqw 1.8cqh;gap:1.4cqh}
-.na-status{margin:0;flex-shrink:0;color:#3d4d45;text-align:left;font-size:min(2.1cqh,3.2cqw);line-height:1.2}
+/* Assistant (AssistantScreen): white card with portrait and words, round cue, two answers, Quitter at the bottom. */
+.na-assistant{padding:2.2cqh 2.6cqw 1.8cqh;gap:1.4cqh}
 .na-main{flex:1;min-height:0;display:flex;flex-direction:column;align-items:stretch;gap:2.2cqh}
 .na-card{flex-shrink:0;display:flex;flex-direction:column;align-items:center;gap:1.2cqh;padding:2.4cqh 4cqw;border-radius:3.4cqw;background:#fff;box-shadow:0 .3cqh 1.4cqh #0f2a210f}
 .na-assistant .assistant-words{margin:0;font-family:var(--sans);font-weight:400;font-size:min(4.6cqh,7.6cqw);line-height:1.3;color:var(--na-ink)}
@@ -39,8 +38,6 @@
 .na-person{display:flex;flex-direction:column;align-items:center;gap:.6cqh}
 .na-person .na-face{width:11cqh;height:11cqh;border:0}
 .na-person strong{font-family:var(--sans);font-weight:500;font-size:min(3.4cqh,5.4cqw);color:var(--na-ink)}
-.na-person-inline{flex-direction:row;gap:1.6cqw}.na-person-inline .na-face{width:6cqh;height:6cqh}
-.na-person-inline strong{font-size:min(3cqh,4.8cqw)}
 
 /* The round cue: a light disc with what the assistant is doing; at a question, the microphone once she has finished. */
 .na-cue{flex-shrink:0;align-self:center;display:grid;place-items:center;width:17cqh;height:15cqh}
@@ -89,11 +86,17 @@
 .demo-player[data-voicing=senior][data-recording=recording] .na-audio-bars i{animation:recording-wave .65s calc(var(--bar) * -.09s) ease-in-out infinite alternate}
 .demo-player[data-voicing=senior][data-recording=recording] .na-audio-dot{animation:recording-glow 1.3s ease-in-out infinite}
 
-/* A photo: the words first, then the picture, as in PhotoReadingLayout (portrait). */
-.na-with-photo .na-card{padding:1.6cqh 3.4cqw;gap:.8cqh}
-.na-with-photo .assistant-words{font-size:min(3.4cqh,5.4cqw)}
-.na-photo-image{flex:1;min-height:0;width:100%;object-fit:cover;border-radius:3cqw}
-.na-with-photo .na-cue{height:12cqh}
+/* A photo opens full screen on black (PhotoViewer): Alice's words float at the top (ReceivedMessage floating),
+   only « Suivante » at the bottom, no Quitter (Near 1.1.52). */
+.na-photo{background:#000;justify-content:space-between;padding:2.4cqh 3cqw}
+.na-photo-image{position:absolute;inset:0;width:100%;height:100%;object-fit:contain}
+.na-received{position:relative;display:flex;flex-direction:column;gap:.6cqh;padding:1.6cqh 3.4cqw;border-radius:2.6cqh;border:1px solid #c8d9cd;border-left:max(3px,.8cqw) solid var(--na-green);background:#f1f6efee;text-align:left}
+.na-received strong{font-weight:600;color:var(--na-green);font-size:min(2.8cqh,4.4cqw)}
+.na-received .caption{margin:0;font-size:min(3.6cqh,5.6cqw);line-height:1.3;color:var(--na-ink)}
+.na-photo-bottom{position:relative;display:flex;flex-direction:column;gap:.6cqh}
+.na-photo .na-cue{height:13cqh}
+.na-photo .na-cue-icon{visibility:hidden}
+
 
 .demo-player:not([data-state=playing]) .na-mic-ring{animation-play-state:paused}
 /* With reduced motion the rings stay open, still, while Jeanne speaks: the cue remains visible without moving. */

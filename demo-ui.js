@@ -1,6 +1,6 @@
 import { DemoPlayer } from './demo-player.js';
-import { scenarios, seniorLines, tabletChoices, demoPresentation, demoAudioState, aliceTypingAt } from './demo-script.js?v=20261110-tablet';
-import { homeScreen, assistantScreen } from './tablet-app.js?v=20261110-tablet';
+import { scenarios, seniorLines, tabletChoices, demoPresentation, demoAudioState, aliceTypingAt } from './demo-script.js?v=20261110-photo';
+import { homeScreen, assistantScreen } from './tablet-app.js?v=20261110-photo';
 import { DemoMedia } from './demo-media.js';
 import { captionMapping, captionWordAt } from './demo-captions.js';
 import { recordedTimings } from './demo-word-timings-flow.js';
@@ -127,7 +127,7 @@ function draw({state, index, total, step, muted}) {
       const done = ['sent','receipt','transcript','ending'].includes(step.view);
       // The senior's words belong to the site's caption, not to the product UI.
       screen.innerHTML = assistantScreen({ view: done ? 'sent' : step.view, words: lastAssistant, choices: step.choices ? tabletChoices[step.choices] : null,
-        withPerson: lastPerson, cue: lastCue, audio: snapshot.recording, status: senior ? 'Je vous écoute' : 'Votre assistante parle' });
+        withPerson: lastPerson, cue: lastCue, audio: snapshot.recording });
     }
     prepareCaption(!idle && step.speaker==='assistant' ? step.text : '');
     $('#alice-composer').innerHTML = family && step.view === 'compose'

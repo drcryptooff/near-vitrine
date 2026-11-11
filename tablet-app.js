@@ -28,14 +28,14 @@ export function homeScreen({ received = false, waking = false, now = new Date() 
   </div>`;
 }
 
-// The assistant screen of the tablet (AssistantScreen, November 2026): a small status line, the white card
+// The assistant screen of the tablet (AssistantScreen, November 2026): the white card
 // with the portrait and the words, the round cue under it, the two answers, and Quitter across the bottom.
-const statusLine = text => `<p class="na-status">${text}</p>`;
 const quit = `<div class="na-quit"><span class="na-quit-disc">${icon('close')}</span>Quitter</div>`;
 // The other answer (yellow) on the left, the proposed action (green) on the right, the icon above the word.
-// Their place stays reserved at the bottom, even when there is no question.
-const choicesBar = choices => `<div class="na-choices"${choices ? ' role="group" aria-label="Les deux grands boutons de la tablette, qu’elle peut aussi toucher"' : ' aria-hidden="true"'}>${choices ? [choices[1], choices[0]].map(([label, symbol], index) =>
-  `<span class="na-choice ${index ? 'na-first' : 'na-second'}">${icon(symbol)}${label}</span>`).join('') : ''}</div>`;
+// Their place stays reserved at the bottom, even when there is no question. A single answer (« Suivante » under a photo)
+// is the proposed action and takes the whole width.
+const choicesBar = choices => `<div class="na-choices"${choices ? ' role="group" aria-label="Les grands boutons de la tablette, qu’elle peut aussi toucher"' : ' aria-hidden="true"'}>${choices ? [[choices[1], 'na-second'], [choices[0], 'na-first']].filter(([choice]) => choice).map(([[label, symbol], tone]) =>
+  `<span class="na-choice ${tone}">${icon(symbol)}${label}</span>`).join('') : ''}</div>`;
 const person = (inline = false) => `<div class="na-person${inline ? ' na-person-inline' : ''}">${face(inline ? 'na-face-small' : '')}<strong>Alice</strong></div>`;
 const recording = state => `<div class="na-audio na-${state}" role="img" aria-label="${state === 'recording' ? 'Le message de Jeanne s’enregistre' : 'Le message vocal de Jeanne, prêt à envoyer'}"><span class="na-audio-dot">${state === 'recording' ? icon('mic') : icon('music')}</span><span class="na-audio-bars" aria-hidden="true">${[14, 26, 40, 24, 48, 32, 18, 30, 12].map((height, index) => `<i style="--h:${height};--bar:${index}"></i>`).join('')}</span>${state === 'recording' ? '<span class="na-audio-time">0:00</span>' : ''}</div>`;
 /**
@@ -48,17 +48,22 @@ const cueBlock = (cue, listens) => `<div class="na-cue${listens ? ' na-listens' 
  * One screen of the assistant. `words` is what the assistant says (highlighted word by word),
  * `choices` its two large answers. Jeanne answers aloud; the answers stay there for those who prefer to touch.
  */
-export function assistantScreen({ view, words = '', status = 'Votre assistante parle', choices, withPerson = false, audio = 'none', cue = 'sound' }) {
+export function assistantScreen({ view, words = '', choices, withPerson = false, audio = 'none', cue = 'sound' }) {
   const recordingNow = audio === 'recording';
   const sent = view === 'sent';
   let main;
-  if (view === 'photo') main = `<div class="na-card na-card-photo">${person(true)}<p class="assistant-words">${words}</p></div>
+  // A photo opens full screen on black (PhotoViewer): Alice's words float at the top, only « Suivante » at the bottom.
+  // The assistant's introduction is heard, not written; the microphone stays above the answer so her voice shows.
+  if (view === 'photo') return `<div class="na na-photo">
     <img class="na-photo-image" src="assets/garden.svg" alt="La photo du jardin envoyée par Alice">
-    ${cueBlock('sound', !!choices)}`;
-  else if (recordingNow) main = `<div class="na-card">${person()}<p class="assistant-words na-listening-words">Je vous écoute.</p>${recording('recording')}</div>`;
+    <div class="na-received"><strong>Message d’Alice</strong><p class="caption">Les fleurs du jardin sont enfin sorties ! Je t’embrasse.</p></div>
+    <div class="na-photo-bottom">${cueBlock('sound', !!choices)}${choices ? choicesBar(choices) : ''}</div>
+  </div>`;
+  if (recordingNow) main = `<div class="na-card">${person()}<p class="assistant-words na-listening-words">Je vous écoute.</p>${recording('recording')}</div>`;
   else main = `<div class="na-card">${withPerson && !sent ? person() : ''}<p class="assistant-words">${words}</p>${audio === 'ready' ? recording('ready') : ''}</div>
     ${cueBlock(sent ? 'send' : cue, !!choices)}`;
-  return `<div class="na na-assistant${view === 'photo' ? ' na-with-photo' : ''}">${statusLine(recordingNow ? 'Enregistrement en cours' : status)}
+  // No status line above the card on the tablet any more (Near 1.1.51, 10 November 2026).
+  return `<div class="na na-assistant">
     <div class="na-main">${main}</div>
     ${choicesBar(choices)}
     ${quit}

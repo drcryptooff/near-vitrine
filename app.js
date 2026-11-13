@@ -1,4 +1,5 @@
-import { pauseDemo } from './demo-ui.js?v=20261111-film-2';
+import { pauseDemo } from './demo-ui.js?v=20261113-music';
+import { setupDemoNavigation } from './demo-navigation.js?v=20261113-music';
 const $ = selector => document.querySelector(selector);
 const $$ = selector => [...document.querySelectorAll(selector)];
 
@@ -13,13 +14,7 @@ $$('[data-phrase]').forEach(button => button.addEventListener('click', () => {
   $('#ai-title').textContent = title; $('#ai-description').textContent = description; $('#ai-boundary').textContent = boundary;
 }));
 
-// A link to the demo goes straight to it, instead of sliding past every section on the way
-// (the tablet in the hero does the same and also starts the scene, in demo-ui.js).
-$$('a[href="#demo"]:not(.hero-tablet)').forEach(link => link.addEventListener('click', event => {
-  event.preventDefault();
-  history.replaceState(null, '', `${location.pathname}${location.search}`);
-  $('#demo-player').scrollIntoView({ behavior: 'instant', block: 'start' });
-}));
+setupDemoNavigation();
 
 $('.menu-toggle').addEventListener('click', () => {
   const open = $('#nav-links').classList.toggle('open');

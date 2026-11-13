@@ -1,5 +1,6 @@
 import { FilmPlayer } from './demo-film-player.js?v=20261111-film';
-import { film } from './demo-film.js?v=20261111-film';
+import { film } from './demo-film.js?v=20261113-music';
+import { frameDemo } from './demo-navigation.js?v=20261113-music';
 import { scenarios, seniorLines, tabletChoices, demoPresentation, demoAudioState, aliceTypingAt } from './demo-script.js?v=20261111-film';
 import { homeScreen, assistantScreen } from './tablet-app.js?v=20261111-film';
 import { captionMapping, captionWordAt } from './demo-captions.js';
@@ -235,6 +236,9 @@ function draw({state, index, total, step, muted}) {
     $('#demo-announcement').textContent = idle ? '' : step.speaker === 'system' ? step.title : `${senior ? 'Jeanne' : family ? 'Alice' : 'Assistante'} : ${step.text}`;
   }
   const playing = state === 'playing';
+  $('#demo-start-hint').setAttribute('aria-hidden', String(!idle));
+  if (idle) tablet.setAttribute('aria-describedby', 'demo-start-hint');
+  else tablet.removeAttribute('aria-describedby');
   tablet.setAttribute('aria-disabled', String(playing));
   tablet.setAttribute('aria-label', playing ? 'Mini-tablette Near, démonstration en cours' : state === 'paused' ? 'Reprendre la démonstration sur la mini-tablette' : ended ? 'Revoir la démonstration sur la mini-tablette' : 'Lancer la démonstration sur la mini-tablette');
   const label = idle ? 'Voir et écouter la démo' : playing ? 'Mettre en pause' : ended ? 'Revoir la scène' : state === 'error' ? 'Réessayer la voix' : 'Reprendre la scène';
@@ -266,18 +270,11 @@ tablet.addEventListener('click', startFromTablet);
 tablet.addEventListener('keydown', event => {
   if (event.key === 'Enter' || event.key === ' ') { event.preventDefault(); startFromTablet(); }
 });
-$('.hero-tablet').addEventListener('click', event => {
-  event.preventDefault();
-  // Instant navigation keeps the screen visible before playback/offscreen checks.
-  history.replaceState(null, '', `${location.pathname}${location.search}`);
-  demo.scrollIntoView({behavior: 'instant', block: 'start'});
-  startFromTablet();
-});
 $('#demo-play').addEventListener('click', () => {
   if (player.state === 'playing') player.pause();
   else {
     if (window.matchMedia('(max-width: 600px)').matches && (player.state === 'idle' || player.state === 'ended')) {
-      demo.scrollIntoView({behavior: reducedMotion.matches ? 'instant' : 'smooth', block: 'start'});
+      frameDemo({ focus: false });
     }
     player.play();
   }

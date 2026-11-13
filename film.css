@@ -1,4 +1,10 @@
 /* The demo as one continuous film: chapters, a camera, what travels between the devices. */
+.demo-start-hint{font-size:14px;font-weight:500;line-height:1.5;text-align:center;color:var(--green);margin:0 auto 20px;max-width:34ch}
+/* Keep its place during playback so neither device jumps when the invitation fades. */
+.demo-start-hint[aria-hidden=true]{visibility:hidden}
+.demo-music-credit{font-size:11px;line-height:1.6;text-align:center;color:#61735b;margin:18px auto 0;max-width:720px}
+.demo-music-credit a{text-decoration:underline;text-underline-offset:3px}
+@media(max-width:600px){.demo-start-hint{font-size:13px;margin-bottom:16px}}
 
 /* Chapters: five segments that fill while they play; a touch jumps to one. */
 .film-chapters{display:flex;gap:8px;width:min(760px,100%);margin:0 auto}

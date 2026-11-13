@@ -6,7 +6,7 @@
   <meta name="description" content="Near relie les aînés à leurs proches : une tablette très simple et une application pour la famille. Messages, photos, appels, musique et journal, à la voix ou avec de grands boutons.">
   <meta name="theme-color" content="#1e6b4f"><title>Near — Rester proche, au quotidien</title>
   <link rel="icon" href="assets/favicon.png"><link rel="preload" href="assets/fraunces.ttf" as="font" type="font/ttf" crossorigin><link rel="preload" href="assets/lexend.ttf" as="font" type="font/ttf" crossorigin>
-  <link rel="stylesheet" href="styles.css?v=20261104-tablet-green"><link rel="stylesheet" href="demo.css?v=20261110-photo"><link rel="stylesheet" href="jeanne.css"><link rel="stylesheet" href="devices.css?v=20261111-jeanne"><link rel="stylesheet" href="phone.css"><link rel="stylesheet" href="alice.css?v=20261110-photo"><link rel="stylesheet" href="swiss.css"><link rel="stylesheet" href="motion.css"><link rel="stylesheet" href="finish.css?v=20261024-finale-2"><link rel="stylesheet" href="profiles.css?v=20261024-jeanne-profile-1"><link rel="stylesheet" href="tablet-app.css?v=20261110-photo"><link rel="stylesheet" href="film.css?v=20261111-film-2"><script src="app.js?v=20261111-film-2" type="module"></script><script src="motion.js" type="module"></script>
+  <link rel="stylesheet" href="styles.css?v=20261104-tablet-green"><link rel="stylesheet" href="demo.css?v=20261110-photo"><link rel="stylesheet" href="jeanne.css"><link rel="stylesheet" href="devices.css?v=20261111-jeanne"><link rel="stylesheet" href="phone.css"><link rel="stylesheet" href="alice.css?v=20261110-photo"><link rel="stylesheet" href="swiss.css"><link rel="stylesheet" href="motion.css"><link rel="stylesheet" href="finish.css?v=20261024-finale-2"><link rel="stylesheet" href="profiles.css?v=20261024-jeanne-profile-1"><link rel="stylesheet" href="tablet-app.css?v=20261110-photo"><link rel="stylesheet" href="film.css?v=20261113-music"><script src="app.js?v=20261113-music" type="module"></script><script src="motion.js" type="module"></script>
 </head>
 <body>
 <a class="skip" href="#main">Aller au contenu</a>
@@ -49,7 +49,7 @@
   <div class="hero-scene" aria-label="Aperçu interactif de la mini-tablette Near">
     <div class="scene-orbit orbit-one"></div><div class="scene-orbit orbit-two"></div><span class="scene-star star-one">✳</span><span class="scene-star star-two">✧</span>
     <div class="floating-label"><span class="avatar peach">A</span><div><strong>Un petit coucou d’Alice</strong><span>Il y a des nouvelles pour vous.</span></div><svg><use href="#i-heart"/></svg></div>
-    <a href="#demo" class="hero-tablet" aria-label="Lancer la démonstration"><div class="camera"></div><div class="hero-screen na-host" id="hero-screen"></div></a>
+    <a href="#demo" class="hero-tablet" aria-label="Voir la tablette de démonstration"><div class="camera"></div><div class="hero-screen na-host" id="hero-screen"></div></a>
     <div class="voice-float"><span class="voice-round"><svg><use href="#i-sound"/></svg></span><p>« Bonjour Jeanne. Vous avez un<br>nouveau message d’Alice. »</p><span class="tiny-wave">▂ ▅ ▃ ▇ ▄ ▂</span></div>
     <span class="handwritten">Le doigt appuyé, c’est parti <span>⤴</span></span>
   </div>
@@ -65,8 +65,9 @@
   <div id="demo-player" class="demo-player" data-state="idle">
   <div class="demo-player-controls"><button id="demo-play" class="button" aria-pressed="false">Voir et écouter la démo</button><button class="sound-toggle" aria-pressed="true" aria-label="Couper le son"></button><button class="reset-button" aria-label="Revenir au début"><svg><use href="#i-reset"/></svg><span>Recommencer</span></button></div>
   <p id="demo-playback-status" class="playback-status" role="status"></p>
+  <p id="demo-start-hint" class="demo-start-hint">Cliquez sur la tablette pour lancer la démo</p>
   <div class="demo-stage">
-    <div class="demo-tablet-column"><div class="device-label"><span class="dot"></span> CHEZ JEANNE <span>La mini-tablette</span></div><div class="demo-tablet" role="button" tabindex="0" aria-label="Lancer la démonstration sur la mini-tablette"><div class="camera"></div><div id="tablet-screen" class="tablet-screen" aria-label="Simulation de la tablette"></div></div></div>
+    <div class="demo-tablet-column"><div class="device-label"><span class="dot"></span> CHEZ JEANNE <span>La mini-tablette</span></div><div class="demo-tablet" role="button" tabindex="0" aria-label="Lancer la démonstration sur la mini-tablette" aria-describedby="demo-start-hint"><div class="camera"></div><div id="tablet-screen" class="tablet-screen" aria-label="Simulation de la tablette"></div></div></div>
     <div class="connection-line" aria-hidden="true"><span></span><svg><use href="#i-heart"/></svg><span></span></div>
     <div class="demo-phone-column"><div class="device-label"><span class="dot peach-dot"></span> CHEZ ALICE <span>L’app famille</span></div><div class="demo-phone"><div class="phone-notch"></div><div class="phone-status"><span>09:41</span><span>▮▮▮ ▰</span></div><div class="phone-header"><span>‹</span><span class="avatar jeanne-profile" aria-hidden="true"></span><div><strong>Jeanne</strong><small>Notre conversation</small></div><span class="phone-actions" aria-hidden="true"><svg><use href="#i-video"/></svg><svg><use href="#i-call"/></svg></span></div><div class="phone-chat"><span class="chat-date">Aujourd’hui</span><div class="chat-bubble mine" id="alice-message"><img src="assets/garden.svg" alt="Illustration du jardin fleuri partagé par Alice"><p>Les fleurs du jardin sont enfin sorties ! Je t’embrasse 🌷</p><small>09:40 ✓✓</small></div><div id="phone-response" aria-live="polite"></div></div><div class="phone-compose" id="alice-composer"></div></div><p class="family-stage-note" id="family-stage-note"></p></div>
     <div class="demo-alice-column" aria-hidden="true">
@@ -95,6 +96,7 @@
   </section>
   </div><audio id="demo-audio" preload="none" aria-hidden="true"></audio>
   <p class="sr-only" id="demo-announcement" aria-live="polite"></p>
+  <p class="demo-music-credit">Musique : « <a href="https://incompetech.com/music/royalty-free/index.html?isrc=USUAN1400037">Carefree</a> » — Kevin MacLeod (<a href="https://incompetech.com/">incompetech.com</a>), licence <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>. Extrait avec volume réduit et fondus.</p>
 </div></section>
 
 <section class="section wrap swiss-section" id="suisse" aria-labelledby="swiss-title"><div class="swiss-card">

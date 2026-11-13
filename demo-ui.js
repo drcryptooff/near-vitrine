@@ -1,6 +1,6 @@
 import { FilmPlayer } from './demo-film-player.js?v=20261111-film';
-import { film } from './demo-film.js?v=20261113-music';
-import { frameDemo } from './demo-navigation.js?v=20261113-music';
+import { film } from './demo-film.js?v=20261113-music2';
+import { frameDemo } from './demo-navigation.js?v=20261113-music2';
 import { scenarios, seniorLines, tabletChoices, demoPresentation, demoAudioState, aliceTypingAt } from './demo-script.js?v=20261111-film';
 import { homeScreen, assistantScreen } from './tablet-app.js?v=20261111-film';
 import { captionMapping, captionWordAt } from './demo-captions.js';

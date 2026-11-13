@@ -1,5 +1,5 @@
-import { pauseDemo } from './demo-ui.js?v=20261113-music';
-import { setupDemoNavigation } from './demo-navigation.js?v=20261113-music';
+import { pauseDemo } from './demo-ui.js?v=20261113-music2';
+import { setupDemoNavigation } from './demo-navigation.js?v=20261113-music2';
 const $ = selector => document.querySelector(selector);
 const $$ = selector => [...document.querySelectorAll(selector)];
 
